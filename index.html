@@ -24,9 +24,21 @@ main{max-width:1180px;margin:auto;padding:68px 24px 100px}
 h1{font-size:clamp(48px,6vw,78px);line-height:.95;letter-spacing:-4px}
 .description{margin-top:25px;max-width:540px;color:var(--muted);font-size:17px;line-height:1.75}
 .price-row{display:flex;align-items:center;gap:18px;margin-top:30px}.price{font-size:31px;font-weight:900}.tag{padding:7px 12px;border-radius:99px;background:#ffecef;color:var(--pink);font-size:12px;font-weight:800}
+.variant-row{margin-top:26px}.variant-label{font-size:13px;font-weight:800;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.variant-options{display:flex;gap:10px;flex-wrap:wrap}
+.variant-pill{padding:10px 18px;border:1px solid var(--line);border-radius:99px;background:#fff;cursor:pointer;font-weight:700;font-size:13px;color:var(--text);transition:.2s}
+.variant-pill:hover{border-color:var(--pink)}
+.variant-pill.active{background:var(--text);color:#fff;border-color:var(--text)}
 .actions{display:flex;gap:12px;align-items:center;margin-top:28px}
 .primary{border:0;background:var(--pink);color:#fff;padding:16px 23px;border-radius:15px;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 12px 25px rgba(232,91,118,.22);transition:.2s}.primary:hover{background:var(--pink2);transform:translateY(-2px)}
 .quantity{height:52px;display:flex;align-items:center;border:1px solid var(--line);border-radius:15px;background:#fff;overflow:hidden}.quantity button{width:45px;height:100%;border:0;background:#fff;cursor:pointer;font-size:20px}.quantity span{width:28px;text-align:center;font-weight:800}
+.map-wrap{border-radius:24px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.map-wrap iframe{display:block;width:100%;height:380px;border:0}
+.map-note{margin-top:16px;color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--line);padding:30px 24px;color:#918486;font-size:13px}
+.footer-inner{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;text-align:center}
+.wa-link{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#25D366;flex-shrink:0}
+.wa-link svg{width:18px;height:18px;fill:#fff}
 .product-visual{position:relative;display:flex;justify-content:center;align-items:center}.glow{position:absolute;width:390px;height:390px;border-radius:50%;background:#ffd7df;opacity:.7}
 .product-card{position:relative;width:min(480px,100%);aspect-ratio:1/1;border-radius:38px;overflow:hidden;background:#eee;box-shadow:var(--shadow);transform:rotate(1.5deg)}
 .product-card img{width:100%;height:100%;object-fit:cover;display:block}
@@ -38,7 +50,7 @@ footer{border-top:1px solid var(--line);padding:30px 24px;color:#918486;font-siz
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:30;opacity:0;pointer-events:none;transition:.25s}.overlay.active{opacity:1;pointer-events:auto}
 .drawer{position:fixed;z-index:31;right:0;top:0;width:min(410px,100%);height:100vh;background:#fff;transform:translateX(100%);transition:.3s;box-shadow:-20px 0 60px rgba(0,0,0,.12);padding:26px;display:flex;flex-direction:column}.drawer.active{transform:translateX(0)}
 .drawer-head{display:flex;justify-content:space-between;align-items:center}.drawer-head h2{font-size:24px}.close{border:0;background:#f6f1f2;width:38px;height:38px;border-radius:12px;cursor:pointer;font-size:20px}
-.cart-item{margin-top:28px;padding:18px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px}.cart-item small{color:#888}.cart-total{margin-top:auto;padding-top:20px;border-top:1px solid var(--line)}.total-line{display:flex;justify-content:space-between;font-weight:900;font-size:20px;margin-bottom:15px}.checkout{width:100%;padding:16px;border:0;border-radius:15px;background:var(--text);color:#fff;font-weight:900;cursor:pointer}.empty{color:#888;margin-top:30px;line-height:1.6}
+.cart-item{margin-top:28px;padding:18px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}.cart-item small{color:#888}.cart-item-right{display:flex;align-items:center;gap:12px}.remove-item{border:0;background:none;color:#b7abad;cursor:pointer;font-size:16px;padding:4px}.remove-item:hover{color:var(--pink)}.cart-total{margin-top:auto;padding-top:20px;border-top:1px solid var(--line)}.total-line{display:flex;justify-content:space-between;font-weight:900;font-size:20px;margin-bottom:15px}.checkout{width:100%;padding:16px;border:0;border-radius:15px;background:var(--text);color:#fff;font-weight:900;cursor:pointer}.empty{color:#888;margin-top:30px;line-height:1.6}
 @media(max-width:800px){.nav-links{display:none}main{padding-top:35px}.hero{grid-template-columns:1fr;gap:45px}.product-visual{order:-1}.product-card{max-width:430px}h1{letter-spacing:-2.5px}.features{grid-template-columns:1fr}}
 @media(max-width:480px){.nav{padding:0 16px}main{padding-left:16px;padding-right:16px}.hero{min-height:auto}.product-card{border-radius:25px}.floating{left:8px;bottom:12px}.actions{flex-wrap:wrap}}
 </style>
@@ -59,6 +71,14 @@ footer{border-top:1px solid var(--line);padding:30px 24px;color:#918486;font-siz
   <h1>Cocori.<br>Sweet in<br>every bite.</h1>
   <p class="description"><strong>Cocori</strong> adalah dessert unik berupa kue lembut yang dipadukan dengan marshmallow, cokelat lumer, dan strawberry. Perpaduan manis, creamy, dan sedikit segar dalam satu sajian yang bikin penasaran.</p>
   <div class="price-row"><div class="price">Rp10.000</div><div class="tag">Our Favorite</div></div>
+  <div class="variant-row">
+    <div class="variant-label">Pilih Rasa</div>
+    <div class="variant-options" id="variantOptions">
+      <button class="variant-pill active" data-flavor="Original" onclick="selectFlavor(this)">Original</button>
+      <button class="variant-pill" data-flavor="Matcha" onclick="selectFlavor(this)">Matcha</button>
+      <button class="variant-pill" data-flavor="Milk" onclick="selectFlavor(this)">Milk</button>
+    </div>
+  </div>
   <div class="actions">
     <div class="quantity"><button onclick="changeQty(-1)">−</button><span id="qty">1</span><button onclick="changeQty(1)">+</button></div>
     <button class="primary" onclick="addToCart()">Tambah ke Keranjang</button>
@@ -83,15 +103,30 @@ footer{border-top:1px solid var(--line);padding:30px 24px;color:#918486;font-siz
 </section>
 
 <section class="section" id="funfact">
-<h2>Fun Fact</h2>
-<div class="fact">✨ <strong>Tahukah kamu?</strong> Nama <strong>Cocori</strong> dibuat sebagai nama khas produk agar dessert ini punya identitas yang mudah diingat. Kombinasi cokelat dan strawberry juga membuat rasa Cocori terasa tidak sekadar manis—ada sentuhan fruity yang menyegarkan.</div>
-<div class="fact">🍓 <strong>Kenapa strawberry?</strong> Strawberry dipilih karena rasa asamnya yang ringan mampu menyeimbangkan manisnya cokelat lumer dan marshmallow.</div>
-<div class="fact">☁️ <strong>Marshmallow-nya kenapa lembut banget?</strong> Marshmallow dipanggang sebentar saja agar bagian luar sedikit karamel tapi bagian dalam tetap lembut dan meleleh di mulut.</div>
-<div class="fact">🎨 <strong>Warna pink di brand Cocori</strong> dipilih karena melambangkan kesan manis, ceria, dan playful—sama seperti rasa dessert-nya.</div>
+<h2>Tentang Cocori</h2>
+<div class="fact"><strong>Asal nama.</strong> Nama Cocori dipilih agar mudah diingat dan mencerminkan karakter dessert ini: manis, ringan, dan sedikit playful.</div>
+<div class="fact"><strong>Kombinasi rasa.</strong> Cokelat lumer dan strawberry dipadukan untuk menyeimbangkan rasa manis dengan sentuhan fruity yang segar.</div>
+<div class="fact"><strong>Tekstur marshmallow.</strong> Marshmallow dipanggang sebentar sehingga bagian luar sedikit karamel, namun bagian dalam tetap lembut.</div>
+</section>
+
+<section class="section" id="lokasi">
+<h2>Area Pengiriman</h2>
+<p class="description">Saat ini Cocori melayani pemesanan khusus untuk wilayah Bogor dan sekitarnya.</p>
+<div class="map-wrap">
+<iframe src="https://maps.google.com/maps?q=Bogor,+Jawa+Barat&z=12&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Peta area pengiriman Cocori — Bogor"></iframe>
+</div>
+<p class="map-note">Belum menemukan lokasi kamu di peta? Hubungi kami lewat WhatsApp untuk konfirmasi jangkauan pengiriman.</p>
 </section>
 </main>
 
-<footer>© 2026 Cocori — Sweet, soft, and unforgettable.</footer>
+<footer>
+<div class="footer-inner">
+  <span>© 2026 Cocori — Dessert lembut khas Bogor.</span>
+  <a class="wa-link" href="https://wa.me/6281234567890?text=Halo%20Cocori%2C%20saya%20ingin%20bertanya%20tentang%20produk" target="_blank" rel="noopener" aria-label="Chat via WhatsApp">
+    <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.3.6 4.5 1.8 6.4L4 29l7.8-1.7c1.9 1 4 1.6 6.2 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.6 1 1-4.5-.2-.4C5.4 17.6 5 16.3 5 15c0-6.1 4.9-11 11-11s11 4.9 11 11-4.9 10.8-11 10.8zm5.9-8.2c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.7.2s-.8 1.1-1 1.3-.4.2-.7.1c-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.3-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.2 3.4 5.4 4.7.8.3 1.4.5 1.8.7.7.2 1.4.2 1.9.1.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>
+  </a>
+</div>
+</footer>
 
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 <aside class="drawer" id="drawer">
@@ -101,18 +136,36 @@ footer{border-top:1px solid var(--line);padding:30px 24px;color:#918486;font-siz
 </aside>
 
 <script>
-let qty=1,cart=0;const price=10000;
+let qty=1,cartItems={},selectedFlavor="Original";const price=10000;
 function changeQty(n){qty=Math.max(1,qty+n);document.getElementById("qty").textContent=qty}
-function addToCart(){cart+=qty;document.getElementById("cartCount").textContent=cart;updateCart();openCart()}
+function selectFlavor(btn){document.querySelectorAll(".variant-pill").forEach(b=>b.classList.remove("active"));btn.classList.add("active");selectedFlavor=btn.dataset.flavor}
+function addToCart(){cartItems[selectedFlavor]=(cartItems[selectedFlavor]||0)+qty;renderCount();updateCart();openCart()}
+function removeItem(flavor){delete cartItems[flavor];renderCount();updateCart()}
+function renderCount(){const total=Object.values(cartItems).reduce((a,b)=>a+b,0);document.getElementById("cartCount").textContent=total}
 function updateCart(){
  const c=document.getElementById("cartContent"),t=document.getElementById("total");
- if(!cart){c.innerHTML='<p class="empty">Keranjang masih kosong.<br>Tambahkan Cocori untuk memulai.</p>';t.textContent="Rp0";return}
- c.innerHTML=`<div class="cart-item"><div><strong>Cocori</strong><br><small>Rp10.000 × ${cart}</small></div><strong>Rp${(price*cart).toLocaleString("id-ID")}</strong></div>`;
- t.textContent="Rp"+(price*cart).toLocaleString("id-ID");
+ const entries=Object.entries(cartItems);
+ if(!entries.length){c.innerHTML='<p class="empty">Keranjang masih kosong.<br>Tambahkan Cocori untuk memulai.</p>';t.textContent="Rp0";return}
+ c.innerHTML=entries.map(([flavor,q])=>`<div class="cart-item"><div><strong>Cocori ${flavor}</strong><br><small>Rp10.000 × ${q}</small></div><div class="cart-item-right"><strong>Rp${(price*q).toLocaleString("id-ID")}</strong><button class="remove-item" onclick="removeItem('${flavor}')" aria-label="Hapus">✕</button></div></div>`).join("");
+ const totalAmount=entries.reduce((sum,[,q])=>sum+price*q,0);
+ t.textContent="Rp"+totalAmount.toLocaleString("id-ID");
 }
 function openCart(){document.getElementById("drawer").classList.add("active");document.getElementById("overlay").classList.add("active")}
 function closeCart(){document.getElementById("drawer").classList.remove("active");document.getElementById("overlay").classList.remove("active")}
-function checkout(){if(!cart){alert("Keranjang masih kosong.");return}alert("Pesanan Cocori berhasil dibuat! Total: Rp"+(price*cart).toLocaleString("id-ID"))}
+async function checkout(){
+ const entries=Object.entries(cartItems);
+ if(!entries.length){alert("Keranjang masih kosong.");return}
+ const totalQty=entries.reduce((sum,[,q])=>sum+q,0);
+ const totalAmount=entries.reduce((sum,[,q])=>sum+price*q,0);
+ const items=entries.map(([flavor,q])=>({flavor,qty:q}));
+ const btn=document.querySelector(".checkout");btn.disabled=true;btn.textContent="Memproses...";
+ try{
+  const r=await fetch("/api/create-transaction",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:totalAmount,qty:totalQty,items})});
+  const data=await r.json();
+  if(data.checkout_url){location.href=data.checkout_url}
+  else{alert("Gagal membuat transaksi, coba lagi.");btn.disabled=false;btn.textContent="Pesan Sekarang"}
+ }catch(e){alert("Terjadi kesalahan koneksi.");btn.disabled=false;btn.textContent="Pesan Sekarang"}
+}
 
 let lastY=0;
 window.addEventListener("scroll",()=>{
