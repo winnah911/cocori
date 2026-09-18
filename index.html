@@ -51,6 +51,13 @@ footer{border-top:1px solid var(--line);padding:30px 24px;color:#918486;font-siz
 .drawer{position:fixed;z-index:31;right:0;top:0;width:min(410px,100%);height:100vh;background:#fff;transform:translateX(100%);transition:.3s;box-shadow:-20px 0 60px rgba(0,0,0,.12);padding:26px;display:flex;flex-direction:column}.drawer.active{transform:translateX(0)}
 .drawer-head{display:flex;justify-content:space-between;align-items:center}.drawer-head h2{font-size:24px}.close{border:0;background:#f6f1f2;width:38px;height:38px;border-radius:12px;cursor:pointer;font-size:20px}
 .cart-item{margin-top:28px;padding:18px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}.cart-item small{color:#888}.cart-item-right{display:flex;align-items:center;gap:12px}.remove-item{border:0;background:none;color:#b7abad;cursor:pointer;font-size:16px;padding:4px}.remove-item:hover{color:var(--pink)}.cart-total{margin-top:auto;padding-top:20px;border-top:1px solid var(--line)}.total-line{display:flex;justify-content:space-between;font-weight:900;font-size:20px;margin-bottom:15px}.checkout{width:100%;padding:16px;border:0;border-radius:15px;background:var(--text);color:#fff;font-weight:900;cursor:pointer}.empty{color:#888;margin-top:30px;line-height:1.6}
+.address-block{margin-bottom:16px}.address-block label{display:block;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}.address-block input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;font-size:14px}.address-block input:focus{outline:none;border-color:var(--pink)}
+.address-error{display:none;margin-top:10px;padding:11px 13px;border-radius:12px;background:#fdeaea;color:#c0392b;font-size:12.5px;font-weight:700;line-height:1.5}.address-error.show{display:block}
+.qris-view{display:none;text-align:center;padding-top:6px}.qris-view.show{display:block}
+.qris-view img{width:100%;max-width:250px;border-radius:16px;border:1px solid var(--line);margin:4px auto 14px;display:block}
+.order-code{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.qris-hint{font-size:13px;font-weight:700;margin-bottom:14px}
+.paid-btn{width:100%;padding:16px;border:0;border-radius:15px;background:#25D366;color:#fff;font-weight:900;cursor:pointer}
 @media(max-width:800px){.nav-links{display:none}main{padding-top:35px}.hero{grid-template-columns:1fr;gap:45px}.product-visual{order:-1}.product-card{max-width:430px}h1{letter-spacing:-2.5px}.features{grid-template-columns:1fr}}
 @media(max-width:480px){.nav{padding:0 16px}main{padding-left:16px;padding-right:16px}.hero{min-height:auto}.product-card{border-radius:25px}.floating{left:8px;bottom:12px}.actions{flex-wrap:wrap}}
 </style>
@@ -132,15 +139,38 @@ footer{border-top:1px solid var(--line);padding:30px 24px;color:#918486;font-siz
 <aside class="drawer" id="drawer">
 <div class="drawer-head"><h2>Keranjang</h2><button class="close" onclick="closeCart()">×</button></div>
 <div id="cartContent"><p class="empty">Keranjang masih kosong.<br>Tambahkan Cocori untuk memulai.</p></div>
-<div class="cart-total"><div class="total-line"><span>Total</span><span id="total">Rp0</span></div><button class="checkout" onclick="checkout()">Pesan Sekarang</button></div>
+<div class="cart-total">
+<div class="total-line"><span>Total</span><span id="total">Rp0</span></div>
+
+<div class="address-block" id="addressBlock">
+<label>Alamat Pengiriman</label>
+<input type="text" id="addressInput" placeholder="Contoh: Pasirkuda, Bogor">
+<div class="address-error" id="addressError"></div>
+</div>
+
+<button class="checkout" onclick="checkout()">Pesan Sekarang</button>
+
+<div class="qris-view" id="qrisView">
+<div class="order-code" id="orderCode"></div>
+<img src="dana-qris.png" alt="QRIS pembayaran Cocori">
+<div class="qris-hint">Scan lalu bayar sesuai total di atas</div>
+<p style="font-size:11.5px;color:var(--muted);margin-bottom:14px">Bisa dibayar pakai GoPay, OVO, DANA, ShopeePay, atau m-banking</p>
+<button class="paid-btn" onclick="confirmPaid()">Saya Sudah Bayar</button>
+</div>
+</div>
 </aside>
 
 <script>
 let qty=1,cartItems={},selectedFlavor="Original";const price=10000;
 function changeQty(n){qty=Math.max(1,qty+n);document.getElementById("qty").textContent=qty}
 function selectFlavor(btn){document.querySelectorAll(".variant-pill").forEach(b=>b.classList.remove("active"));btn.classList.add("active");selectedFlavor=btn.dataset.flavor}
-function addToCart(){cartItems[selectedFlavor]=(cartItems[selectedFlavor]||0)+qty;renderCount();updateCart();openCart()}
-function removeItem(flavor){delete cartItems[flavor];renderCount();updateCart()}
+function resetPaymentView(){
+ document.getElementById("qrisView").classList.remove("show");
+ document.getElementById("addressBlock").style.display="";
+ document.querySelector(".checkout").style.display="";
+}
+function addToCart(){cartItems[selectedFlavor]=(cartItems[selectedFlavor]||0)+qty;renderCount();updateCart();resetPaymentView();openCart()}
+function removeItem(flavor){delete cartItems[flavor];renderCount();updateCart();resetPaymentView()}
 function renderCount(){const total=Object.values(cartItems).reduce((a,b)=>a+b,0);document.getElementById("cartCount").textContent=total}
 function updateCart(){
  const c=document.getElementById("cartContent"),t=document.getElementById("total");
@@ -152,19 +182,33 @@ function updateCart(){
 }
 function openCart(){document.getElementById("drawer").classList.add("active");document.getElementById("overlay").classList.add("active")}
 function closeCart(){document.getElementById("drawer").classList.remove("active");document.getElementById("overlay").classList.remove("active")}
-async function checkout(){
+const allowedAreas=["smk infokom","pasirkuda"];
+let currentOrderCode="";
+
+function checkout(){
  const entries=Object.entries(cartItems);
  if(!entries.length){alert("Keranjang masih kosong.");return}
- const totalQty=entries.reduce((sum,[,q])=>sum+q,0);
+ const address=document.getElementById("addressInput").value.trim();
+ const errEl=document.getElementById("addressError");
+ if(!address){errEl.textContent="Alamat wajib diisi terlebih dahulu.";errEl.classList.add("show");return}
+ const isCovered=allowedAreas.some(a=>address.toLowerCase().includes(a));
+ if(!isCovered){errEl.innerHTML=`Maaf, kami belum bisa memesan untuk daerah <strong>"${address}"</strong>. Saat ini pengiriman hanya tersedia di area SMK Infokom dan Pasirkuda.`;errEl.classList.add("show");return}
+ errEl.classList.remove("show");
+
+ currentOrderCode="COCORI-"+Date.now();
+ document.getElementById("orderCode").textContent="Kode Order: "+currentOrderCode;
+ document.getElementById("addressBlock").style.display="none";
+ document.querySelector(".checkout").style.display="none";
+ document.getElementById("qrisView").classList.add("show");
+}
+
+function confirmPaid(){
+ const entries=Object.entries(cartItems);
  const totalAmount=entries.reduce((sum,[,q])=>sum+price*q,0);
- const items=entries.map(([flavor,q])=>({flavor,qty:q}));
- const btn=document.querySelector(".checkout");btn.disabled=true;btn.textContent="Memproses...";
- try{
-  const r=await fetch("/api/create-transaction",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:totalAmount,qty:totalQty,items})});
-  const data=await r.json();
-  if(data.checkout_url){location.href=data.checkout_url}
-  else{alert("Gagal membuat transaksi, coba lagi.");btn.disabled=false;btn.textContent="Pesan Sekarang"}
- }catch(e){alert("Terjadi kesalahan koneksi.");btn.disabled=false;btn.textContent="Pesan Sekarang"}
+ const address=document.getElementById("addressInput").value.trim();
+ const itemsText=entries.map(([flavor,q])=>`Cocori ${flavor} x${q}`).join(", ");
+ const msg=`Halo, saya sudah bayar pesanan Cocori.\nKode Order: ${currentOrderCode}\nPesanan: ${itemsText}\nTotal: Rp${totalAmount.toLocaleString("id-ID")}\nAlamat saya: ${address}`;
+ window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(msg)}`,"_blank");
 }
 
 let lastY=0;
