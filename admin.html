@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Cocori</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff9f7;--text:#23181b;--muted:#8b7d81;--pink:#e85b76;--pink2:#d8405f;--pink-soft:#fff0f3;--line:#f2e6e8;--green:#25d366;--red:#e74c3c;--amber:#f0a500}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.wrap{max-width:1000px;margin:auto;padding:40px 20px 80px}
+h1{font-size:26px;letter-spacing:-.5px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:30px}
+
+/* Login */
+.login-box{max-width:360px;margin:90px auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:34px;text-align:center}
+.login-box h2{font-size:19px;margin-bottom:6px}
+.login-box p{font-size:13px;color:var(--muted);margin-bottom:20px}
+.login-box input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;margin-bottom:12px}
+.login-box button{width:100%;padding:14px;border:0;border-radius:12px;background:var(--pink);color:#fff;font-weight:800;cursor:pointer;font-size:14.5px}
+.login-err{color:var(--red);font-size:12.5px;margin-top:10px;display:none}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+.tab{padding:12px 18px;border:0;background:none;cursor:pointer;font-weight:700;font-size:14px;color:var(--muted);border-bottom:2px solid transparent}
+.tab.active{color:var(--pink);border-color:var(--pink)}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Orders */
+.order-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px}
+.order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.order-code{font-weight:800;font-size:15px}
+.order-time{font-size:11.5px;color:var(--muted)}
+.badge{padding:5px 11px;border-radius:99px;font-size:11.5px;font-weight:800}
+.badge.menunggu_pembayaran{background:#fff4dd;color:#9a6b00}
+.badge.menunggu_konfirmasi{background:#fff0dc;color:#b35a00}
+.badge.dibayar{background:#e6f8ec;color:#1f8a4c}
+.badge.ditolak{background:#fdeaea;color:#c0392b}
+.order-row{display:flex;gap:8px;font-size:13.5px;margin-bottom:5px}
+.order-row b{min-width:85px;color:var(--muted);font-weight:700}
+.order-items{font-size:13.5px;margin:10px 0;padding:10px 12px;background:var(--pink-soft);border-radius:10px}
+.order-actions{display:flex;gap:10px;margin-top:14px}
+.btn{padding:10px 16px;border:0;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer}
+.btn.accept{background:var(--green);color:#fff}
+.btn.reject{background:var(--red);color:#fff}
+.empty{text-align:center;color:var(--muted);padding:50px 0}
+
+/* Menu management */
+.menu-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:12px}
+.menu-item strong{font-size:15px}
+.switch{position:relative;width:48px;height:28px}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#e2d5d8;border-radius:99px;cursor:pointer;transition:.25s}
+.slider::before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s}
+input:checked + .slider{background:var(--red)}
+input:checked + .slider::before{transform:translateX(20px)}
+.menu-status{font-size:12px;color:var(--muted);margin-top:3px}
+
+.refresh-btn{padding:10px 16px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login-box">
+  <h2>🔒 Admin Cocori</h2>
+  <p>Masukkan password admin untuk masuk</p>
+  <input type="password" id="pwInput" placeholder="Password">
+  <button onclick="doLogin()">Masuk</button>
+  <div class="login-err" id="loginErr">Password salah, coba lagi.</div>
+</div>
+
+<div class="wrap" id="appView" style="display:none">
+  <h1>Admin Panel Cocori</h1>
+  <p class="sub">Kelola pesanan masuk dan status menu di sini.</p>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="orders" onclick="switchTab('orders')">Pesanan</button>
+    <button class="tab" data-tab="menu" onclick="switchTab('menu')">Kelola Menu</button>
+  </div>
+
+  <div class="panel active" id="panel-orders">
+    <button class="refresh-btn" onclick="loadOrders()">🔄 Refresh</button>
+    <div id="ordersList"></div>
+  </div>
+
+  <div class="panel" id="panel-menu">
+    <div id="menuList"></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let ADMIN_PW = sessionStorage.getItem("cocori_admin_pw") || "";
+
+async function api(path, options = {}) {
+  const res = await fetch(path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-password": ADMIN_PW,
+      ...options.headers,
+    },
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Request gagal");
+  return res.json();
+}
+
+async function doLogin() {
+  const pw = $("pwInput").value;
+  try {
+    const r = await fetch("/api/admin-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: pw }),
+    });
+    if (!r.ok) throw new Error();
+    ADMIN_PW = pw;
+    sessionStorage.setItem("cocori_admin_pw", pw);
+    $("loginView").style.display = "none";
+    $("appView").style.display = "block";
+    loadOrders();
+    loadMenu();
+  } catch {
+    $("loginErr").style.display = "block";
+  }
+}
+
+function switchTab(name) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + name));
+}
+
+const STATUS_LABEL = {
+  menunggu_pembayaran: "Menunggu Pembayaran",
+  menunggu_konfirmasi: "Menunggu Konfirmasi",
+  dibayar: "Dibayar",
+  ditolak: "Ditolak",
+};
+
+async function loadOrders() {
+  $("ordersList").innerHTML = '<p class="empty">Memuat...</p>';
+  try {
+    const orders = await api("/api/orders");
+    if (!orders.length) {
+      $("ordersList").innerHTML = '<p class="empty">Belum ada pesanan masuk.</p>';
+      return;
+    }
+    $("ordersList").innerHTML = orders.map(o => {
+      const itemsText = o.items.map(it =>
+        `Cocori ${it.flavor}${it.toppings?.length ? " (+" + it.toppings.join(", +") + ")" : ""} x${it.qty}`
+      ).join(", ");
+      const canAct = o.status === "menunggu_konfirmasi";
+      return `
+      <div class="order-card">
+        <div class="order-top">
+          <div>
+            <div class="order-code">${o.order_code}</div>
+            <div class="order-time">${new Date(o.created_at).toLocaleString("id-ID")}</div>
+          </div>
+          <span class="badge ${o.status}">${STATUS_LABEL[o.status] || o.status}</span>
+        </div>
+        <div class="order-row"><b>Nama</b> ${o.customer_name}</div>
+        <div class="order-row"><b>Wilayah</b> ${o.area}</div>
+        <div class="order-row"><b>Alamat</b> ${o.address}</div>
+        <div class="order-row"><b>Total</b> Rp${Number(o.total).toLocaleString("id-ID")}</div>
+        <div class="order-items">${itemsText}</div>
+        ${canAct ? `
+        <div class="order-actions">
+          <button class="btn accept" onclick="updateStatus('${o.order_code}','dibayar')">✓ Terima</button>
+          <button class="btn reject" onclick="updateStatus('${o.order_code}','ditolak')">✕ Tolak</button>
+        </div>` : ""}
+      </div>`;
+    }).join("");
+  } catch (e) {
+    $("ordersList").innerHTML = `<p class="empty">Gagal memuat: ${e.message}</p>`;
+  }
+}
+
+async function updateStatus(order_code, status) {
+  try {
+    await api("/api/orders", {
+      method: "PATCH",
+      body: JSON.stringify({ order_code, status, byAdmin: true }),
+    });
+    loadOrders();
+  } catch (e) {
+    alert("Gagal update status: " + e.message);
+  }
+}
+
+async function loadMenu() {
+  $("menuList").innerHTML = '<p class="empty">Memuat...</p>';
+  try {
+    const items = await api("/api/menu");
+    $("menuList").innerHTML = items.map(it => `
+      <div class="menu-item">
+        <div>
+          <strong>Cocori ${it.flavor}</strong>
+          <div class="menu-status">${it.sold_out ? "Sedang sold out" : "Tersedia"}</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" ${it.sold_out ? "checked" : ""} onchange="toggleSoldOut('${it.flavor}', this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>`).join("");
+  } catch (e) {
+    $("menuList").innerHTML = `<p class="empty">Gagal memuat: ${e.message}</p>`;
+  }
+}
+
+async function toggleSoldOut(flavor, sold_out) {
+  try {
+    await api("/api/menu", { method: "PATCH", body: JSON.stringify({ flavor, sold_out }) });
+    loadMenu();
+  } catch (e) {
+    alert("Gagal update menu: " + e.message);
+  }
+}
+
+if (ADMIN_PW) {
+  $("loginView").style.display = "none";
+  $("appView").style.display = "block";
+  loadOrders();
+  loadMenu();
+}
+</script>
+</body>
+</html>
