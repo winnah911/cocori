@@ -65,7 +65,15 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Header Typography */
+  /* Header Layout */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
   .header-title {
     font-size: 28px;
     font-weight: 800;
@@ -76,7 +84,25 @@
   .header-sub {
     color: var(--text-muted);
     font-size: 15px;
-    margin-bottom: 32px;
+  }
+  .logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--danger-bg);
+    background: var(--surface);
+    color: var(--danger);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+  }
+  .logout-btn:hover {
+    background: var(--danger-bg);
+    border-color: #FCA5A5;
   }
 
   /* Login Centered Overlay */
@@ -376,6 +402,8 @@
     .wrap { padding: 30px 16px 60px; }
     .order-actions { flex-direction: column; }
     .order-card { padding: 20px; }
+    .header-container { flex-direction: column; align-items: flex-start; }
+    .logout-btn { align-self: flex-start; }
   }
 </style>
 </head>
@@ -394,8 +422,16 @@
 </div>
 
 <div class="wrap" id="appView" style="display:none">
-  <h1 class="header-title">Dashboard Cocori</h1>
-  <p class="header-sub">Kelola pesanan masuk dan atur ketersediaan menu.</p>
+  
+  <div class="header-container">
+    <div>
+      <h1 class="header-title">Dashboard Cocori</h1>
+      <p class="header-sub">Kelola pesanan masuk dan atur ketersediaan menu.</p>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar
+    </button>
+  </div>
 
   <div class="tabs">
     <button class="tab active" data-tab="orders" onclick="switchTab('orders')">
@@ -462,6 +498,24 @@ async function doLogin() {
     $("loginErr").style.display = "block";
     btn.innerHTML = "Masuk Sekarang";
   }
+}
+
+function doLogout() {
+  if(!confirm("Yakin ingin keluar dari Admin Panel?")) return;
+  
+  // Hapus data sesi admin
+  ADMIN_PW = "";
+  sessionStorage.removeItem("cocori_admin_pw");
+  
+  // Reset tampilan ke halaman login
+  $("pwInput").value = "";
+  $("loginErr").style.display = "none";
+  $("appView").style.display = "none";
+  $("loginView").style.display = "flex";
+  
+  // Reset teks tombol login
+  const btn = document.querySelector(".login-box button");
+  btn.innerHTML = "Masuk Sekarang";
 }
 
 function switchTab(name) {
