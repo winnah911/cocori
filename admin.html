@@ -5,95 +5,426 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel — Cocori</title>
 <meta name="robots" content="noindex, nofollow">
+<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- FontAwesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root{--bg:#fff9f7;--text:#23181b;--muted:#8b7d81;--pink:#e85b76;--pink2:#d8405f;--pink-soft:#fff0f3;--line:#f2e6e8;--green:#25d366;--red:#e74c3c;--amber:#f0a500}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.wrap{max-width:1000px;margin:auto;padding:40px 20px 80px}
-h1{font-size:26px;letter-spacing:-.5px;margin-bottom:4px}
-.sub{color:var(--muted);font-size:14px;margin-bottom:30px}
+  :root {
+    --bg-body: #F9FAFB;
+    --surface: #FFFFFF;
+    --text-main: #111827;
+    --text-muted: #6B7280;
+    --primary: #E85B76;
+    --primary-hover: #D8405F;
+    --primary-light: #FFF0F3;
+    --border: #E5E7EB;
+    
+    /* Status Colors */
+    --success: #10B981;
+    --success-bg: #D1FAE5;
+    --success-text: #065F46;
+    --danger: #EF4444;
+    --danger-bg: #FEE2E2;
+    --danger-text: #991B1B;
+    --warning: #F59E0B;
+    --warning-bg: #FEF3C7;
+    --warning-text: #92400E;
+    --info-bg: #DBEAFE;
+    --info-text: #1E40AF;
 
-/* Login */
-.login-box{max-width:360px;margin:90px auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:34px;text-align:center}
-.login-box h2{font-size:19px;margin-bottom:6px}
-.login-box p{font-size:13px;color:var(--muted);margin-bottom:20px}
-.login-box input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;margin-bottom:12px}
-.login-box button{width:100%;padding:14px;border:0;border-radius:12px;background:var(--pink);color:#fff;font-weight:800;cursor:pointer;font-size:14.5px}
-.login-err{color:var(--red);font-size:12.5px;margin-top:10px;display:none}
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --transition: all 0.2s ease;
+  }
 
-/* Tabs */
-.tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--line)}
-.tab{padding:12px 18px;border:0;background:none;cursor:pointer;font-weight:700;font-size:14px;color:var(--muted);border-bottom:2px solid transparent}
-.tab.active{color:var(--pink);border-color:var(--pink)}
-.panel{display:none}
-.panel.active{display:block}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
 
-/* Orders */
-.order-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px}
-.order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-.order-code{font-weight:800;font-size:15px}
-.order-time{font-size:11.5px;color:var(--muted)}
-.badge{padding:5px 11px;border-radius:99px;font-size:11.5px;font-weight:800}
-.badge.menunggu_pembayaran{background:#fff4dd;color:#9a6b00}
-.badge.menunggu_konfirmasi{background:#fff0dc;color:#b35a00}
-.badge.dibayar{background:#e6f8ec;color:#1f8a4c}
-.badge.ditolak{background:#fdeaea;color:#c0392b}
-.order-row{display:flex;gap:8px;font-size:13.5px;margin-bottom:5px}
-.order-row b{min-width:85px;color:var(--muted);font-weight:700}
-.order-items{font-size:13.5px;margin:10px 0;padding:10px 12px;background:var(--pink-soft);border-radius:10px}
-.order-actions{display:flex;gap:10px;margin-top:14px}
-.btn{padding:10px 16px;border:0;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer}
-.btn.accept{background:var(--green);color:#fff}
-.btn.reject{background:var(--red);color:#fff}
-.empty{text-align:center;color:var(--muted);padding:50px 0}
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    width: 100%;
+    animation: fadeIn 0.4s ease;
+  }
 
-/* Menu management */
-.menu-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:12px}
-.menu-item strong{font-size:15px}
-.switch{position:relative;width:48px;height:28px}
-.switch input{opacity:0;width:0;height:0}
-.slider{position:absolute;inset:0;background:#e2d5d8;border-radius:99px;cursor:pointer;transition:.25s}
-.slider::before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s}
-input:checked + .slider{background:var(--red)}
-input:checked + .slider::before{transform:translateX(20px)}
-.menu-status{font-size:12px;color:var(--muted);margin-top:3px}
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-.refresh-btn{padding:10px 16px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;margin-bottom:16px}
+  /* Header Typography */
+  .header-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    color: var(--text-main);
+  }
+  .header-sub {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  /* Login Centered Overlay */
+  #loginView {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+  }
+  .login-box h2 { 
+    font-size: 22px; 
+    margin-bottom: 8px; 
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .login-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+  
+  .input-group { position: relative; margin-bottom: 16px; }
+  .login-box input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-family: inherit;
+    transition: var(--transition);
+    outline: none;
+  }
+  .login-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+  }
+  .login-box button {
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 15px;
+    transition: var(--transition);
+  }
+  .login-box button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+  }
+  .login-err {
+    color: var(--danger);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 12px;
+    background: var(--danger-bg);
+    padding: 8px;
+    border-radius: 8px;
+    display: none;
+  }
+
+  /* Modern Segmented Tabs */
+  .tabs {
+    display: flex;
+    background: #E5E7EB;
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    gap: 4px;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px 16px;
+    border: 0;
+    background: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .tab:hover { color: var(--text-main); }
+  .tab.active {
+    background: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  /* Utility Buttons */
+  .refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-main);
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+  }
+  .refresh-btn:hover { background: var(--bg-body); border-color: #D1D5DB; }
+  
+  .empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 60px 20px;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px dashed #D1D5DB;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .empty i {
+    font-size: 28px;
+    color: #9CA3AF;
+  }
+
+  /* Order Cards Styling */
+  .order-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .order-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: #D1D5DB;
+  }
+
+  .order-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .order-info { display: flex; flex-direction: column; gap: 4px; }
+  .order-code { font-weight: 800; font-size: 18px; color: var(--text-main); }
+  .order-time { font-size: 13px; color: var(--text-muted); font-weight: 500;}
+  
+  /* Badges */
+  .badge {
+    padding: 6px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge.menunggu_pembayaran { background: var(--warning-bg); color: var(--warning-text); }
+  .badge.menunggu_konfirmasi { background: var(--info-bg); color: var(--info-text); }
+  .badge.dibayar { background: var(--success-bg); color: var(--success-text); }
+  .badge.ditolak { background: var(--danger-bg); color: var(--danger-text); }
+
+  /* Order Details Grid */
+  .order-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .detail-group { display: flex; flex-direction: column; gap: 4px; }
+  .detail-group.full { grid-column: span 2; }
+  
+  .detail-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+  .detail-value { font-size: 14.5px; font-weight: 500; line-height: 1.4; color: var(--text-main);}
+  
+  .order-items-box {
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin: 16px 0;
+    border: 1px solid rgba(232, 91, 118, 0.1);
+  }
+  .order-items-box .detail-value { font-weight: 600; color: var(--primary-hover); }
+
+  .order-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F9FAFB;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-top: 16px;
+  }
+  .total-label { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+  .total-price { font-size: 18px; font-weight: 800; color: var(--primary); }
+
+  /* Action Buttons */
+  .order-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn.accept { background: var(--success); color: #fff; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2); }
+  .btn.accept:hover { background: #059669; }
+  .btn.reject { background: var(--danger-bg); color: var(--danger-text); }
+  .btn.reject:hover { background: #FECACA; }
+
+  /* Menu Management */
+  .menu-list { display: flex; flex-direction: column; gap: 12px; }
+  .menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .menu-item:hover { border-color: #D1D5DB; box-shadow: var(--shadow-md); }
+  
+  .menu-info { display: flex; flex-direction: column; gap: 4px; }
+  .menu-name { font-size: 16px; font-weight: 700; color: var(--text-main); }
+  .menu-status { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .menu-status::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+  .status-ready { color: var(--success-text); }
+  .status-ready::before { background: var(--success); }
+  .status-empty { color: var(--danger-text); }
+  .status-empty::before { background: var(--danger); }
+
+  /* Custom Toggle Switch */
+  .switch { position: relative; width: 52px; height: 30px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; inset: 0;
+    background: #E5E7EB;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .slider::before {
+    content: "";
+    position: absolute;
+    width: 24px; height: 24px;
+    left: 3px; bottom: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  input:checked + .slider { background: var(--danger); }
+  input:checked + .slider::before { transform: translateX(22px); }
+
+  /* Responsive Adjustments */
+  @media (max-width: 600px) {
+    .order-details { grid-template-columns: 1fr; gap: 12px; }
+    .detail-group.full { grid-column: span 1; }
+    .wrap { padding: 30px 16px 60px; }
+    .order-actions { flex-direction: column; }
+    .order-card { padding: 20px; }
+  }
 </style>
 </head>
 <body>
 
-<div id="loginView" class="login-box">
-  <h2>🔒 Admin Cocori</h2>
-  <p>Masukkan password admin untuk masuk</p>
-  <input type="password" id="pwInput" placeholder="Password">
-  <button onclick="doLogin()">Masuk</button>
-  <div class="login-err" id="loginErr">Password salah, coba lagi.</div>
+<div id="loginView">
+  <div class="login-box">
+    <h2><i class="fa-solid fa-lock"></i> Admin Panel</h2>
+    <p>Silakan masuk untuk mengelola sistem.</p>
+    <div class="input-group">
+      <input type="password" id="pwInput" placeholder="Masukkan Password Admin" onkeypress="handleEnter(event)">
+    </div>
+    <button onclick="doLogin()">Masuk Sekarang</button>
+    <div class="login-err" id="loginErr">Password salah, silakan coba lagi.</div>
+  </div>
 </div>
 
 <div class="wrap" id="appView" style="display:none">
-  <h1>Admin Panel Cocori</h1>
-  <p class="sub">Kelola pesanan masuk dan status menu di sini.</p>
+  <h1 class="header-title">Dashboard Cocori</h1>
+  <p class="header-sub">Kelola pesanan masuk dan atur ketersediaan menu.</p>
 
   <div class="tabs">
-    <button class="tab active" data-tab="orders" onclick="switchTab('orders')">Pesanan</button>
-    <button class="tab" data-tab="menu" onclick="switchTab('menu')">Kelola Menu</button>
+    <button class="tab active" data-tab="orders" onclick="switchTab('orders')">
+      <i class="fa-solid fa-clipboard-list"></i> Daftar Pesanan
+    </button>
+    <button class="tab" data-tab="menu" onclick="switchTab('menu')">
+      <i class="fa-solid fa-utensils"></i> Kelola Menu
+    </button>
   </div>
 
   <div class="panel active" id="panel-orders">
-    <button class="refresh-btn" onclick="loadOrders()">🔄 Refresh</button>
+    <button class="refresh-btn" onclick="loadOrders()">
+      <i class="fa-solid fa-rotate-right"></i> Refresh Data
+    </button>
     <div id="ordersList"></div>
   </div>
 
   <div class="panel" id="panel-menu">
-    <div id="menuList"></div>
+    <div id="menuList" class="menu-list"></div>
   </div>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
 let ADMIN_PW = sessionStorage.getItem("cocori_admin_pw") || "";
+
+function handleEnter(e) {
+  if (e.key === 'Enter') doLogin();
+}
 
 async function api(path, options = {}) {
   const res = await fetch(path, {
@@ -110,6 +441,10 @@ async function api(path, options = {}) {
 
 async function doLogin() {
   const pw = $("pwInput").value;
+  if (!pw) return;
+  const btn = document.querySelector(".login-box button");
+  btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Memeriksa...';
+  
   try {
     const r = await fetch("/api/admin-login", {
       method: "POST",
@@ -125,6 +460,7 @@ async function doLogin() {
     loadMenu();
   } catch {
     $("loginErr").style.display = "block";
+    btn.innerHTML = "Masuk Sekarang";
   }
 }
 
@@ -136,50 +472,86 @@ function switchTab(name) {
 const STATUS_LABEL = {
   menunggu_pembayaran: "Menunggu Pembayaran",
   menunggu_konfirmasi: "Menunggu Konfirmasi",
-  dibayar: "Dibayar",
+  dibayar: "Sudah Dibayar",
   ditolak: "Ditolak",
 };
 
 async function loadOrders() {
-  $("ordersList").innerHTML = '<p class="empty">Memuat...</p>';
+  $("ordersList").innerHTML = '<div class="empty"><div><i class="fa-solid fa-circle-notch fa-spin"></i></div>Memuat pesanan...</div>';
   try {
     const orders = await api("/api/orders");
     if (!orders.length) {
-      $("ordersList").innerHTML = '<p class="empty">Belum ada pesanan masuk.</p>';
+      $("ordersList").innerHTML = '<div class="empty"><div><i class="fa-solid fa-box-open"></i></div>Belum ada pesanan masuk saat ini.</div>';
       return;
     }
+    
     $("ordersList").innerHTML = orders.map(o => {
       const itemsText = o.items.map(it =>
-        `Cocori ${it.flavor}${it.toppings?.length ? " (+" + it.toppings.join(", +") + ")" : ""} x${it.qty}`
-      ).join(", ");
+        `${it.qty}x Cocori ${it.flavor}${it.toppings?.length ? " (+" + it.toppings.join(", +") + ")" : ""}`
+      ).join("<br>");
+      
       const canAct = o.status === "menunggu_konfirmasi";
+      const dateObj = new Date(o.created_at);
+      const timeString = dateObj.toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' });
+      const dateString = dateObj.toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' });
+
       return `
       <div class="order-card">
         <div class="order-top">
-          <div>
-            <div class="order-code">${o.order_code}</div>
-            <div class="order-time">${new Date(o.created_at).toLocaleString("id-ID")}</div>
+          <div class="order-info">
+            <span class="order-code">#${o.order_code}</span>
+            <span class="order-time">${dateString}, ${timeString} WIB</span>
           </div>
           <span class="badge ${o.status}">${STATUS_LABEL[o.status] || o.status}</span>
         </div>
-        <div class="order-row"><b>Nama</b> ${o.customer_name}</div>
-        <div class="order-row"><b>Wilayah</b> ${o.area}</div>
-        <div class="order-row"><b>Alamat</b> ${o.address}</div>
-        <div class="order-row"><b>Total</b> Rp${Number(o.total).toLocaleString("id-ID")}</div>
-        <div class="order-items">${itemsText}</div>
+        
+        <div class="order-details">
+          <div class="detail-group">
+            <span class="detail-label">Nama Pelanggan</span>
+            <span class="detail-value">${o.customer_name}</span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">Wilayah Pengiriman</span>
+            <span class="detail-value">${o.area}</span>
+          </div>
+          <div class="detail-group full">
+            <span class="detail-label">Alamat Lengkap</span>
+            <span class="detail-value">${o.address}</span>
+          </div>
+        </div>
+
+        <div class="order-items-box">
+          <div class="detail-group">
+            <span class="detail-label" style="margin-bottom:6px">Detail Pesanan:</span>
+            <span class="detail-value">${itemsText}</span>
+          </div>
+        </div>
+
+        <div class="order-total-row">
+          <span class="total-label">Total Tagihan</span>
+          <span class="total-price">Rp ${Number(o.total).toLocaleString("id-ID")}</span>
+        </div>
+
         ${canAct ? `
         <div class="order-actions">
-          <button class="btn accept" onclick="updateStatus('${o.order_code}','dibayar')">✓ Terima</button>
-          <button class="btn reject" onclick="updateStatus('${o.order_code}','ditolak')">✕ Tolak</button>
+          <button class="btn accept" onclick="updateStatus('${o.order_code}','dibayar')">
+             <i class="fa-solid fa-check"></i> Terima Pesanan
+          </button>
+          <button class="btn reject" onclick="updateStatus('${o.order_code}','ditolak')">
+             <i class="fa-solid fa-xmark"></i> Tolak Pesanan
+          </button>
         </div>` : ""}
       </div>`;
     }).join("");
   } catch (e) {
-    $("ordersList").innerHTML = `<p class="empty">Gagal memuat: ${e.message}</p>`;
+    $("ordersList").innerHTML = `<div class="empty"><div><i class="fa-solid fa-circle-exclamation"></i></div>Gagal memuat data: ${e.message}</div>`;
   }
 }
 
 async function updateStatus(order_code, status) {
+  const confirmMsg = status === 'dibayar' ? "Terima pesanan ini?" : "Yakin ingin menolak pesanan ini?";
+  if(!confirm(confirmMsg)) return;
+  
   try {
     await api("/api/orders", {
       method: "PATCH",
@@ -192,22 +564,24 @@ async function updateStatus(order_code, status) {
 }
 
 async function loadMenu() {
-  $("menuList").innerHTML = '<p class="empty">Memuat...</p>';
+  $("menuList").innerHTML = '<div class="empty"><div><i class="fa-solid fa-circle-notch fa-spin"></i></div>Memuat menu...</div>';
   try {
     const items = await api("/api/menu");
     $("menuList").innerHTML = items.map(it => `
       <div class="menu-item">
-        <div>
-          <strong>Cocori ${it.flavor}</strong>
-          <div class="menu-status">${it.sold_out ? "Sedang sold out" : "Tersedia"}</div>
+        <div class="menu-info">
+          <div class="menu-name">Cocori ${it.flavor}</div>
+          <div class="menu-status ${it.sold_out ? 'status-empty' : 'status-ready'}">
+            ${it.sold_out ? "Stok Habis (Sold Out)" : "Tersedia"}
+          </div>
         </div>
-        <label class="switch">
+        <label class="switch" title="Geser untuk mengatur ketersediaan">
           <input type="checkbox" ${it.sold_out ? "checked" : ""} onchange="toggleSoldOut('${it.flavor}', this.checked)">
           <span class="slider"></span>
         </label>
       </div>`).join("");
   } catch (e) {
-    $("menuList").innerHTML = `<p class="empty">Gagal memuat: ${e.message}</p>`;
+    $("menuList").innerHTML = `<div class="empty"><div><i class="fa-solid fa-circle-exclamation"></i></div>Gagal memuat: ${e.message}</div>`;
   }
 }
 
@@ -217,6 +591,7 @@ async function toggleSoldOut(flavor, sold_out) {
     loadMenu();
   } catch (e) {
     alert("Gagal update menu: " + e.message);
+    loadMenu(); 
   }
 }
 
