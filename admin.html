@@ -276,7 +276,8 @@
     left: 3px; bottom: 3px; background: #fff; border-radius: 50%;
     transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-  input:checked + .slider { background: var(--danger); }
+  /* ON (hijau) = Tersedia. OFF (abu-abu) = Habis/Sold Out. */
+  input:checked + .slider { background: var(--success); }
   input:checked + .slider::before { transform: translateX(22px); }
 
   /* Responsive Adjustments */
@@ -317,6 +318,17 @@
     <button class="logout-btn" onclick="doLogout()">
       <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar
     </button>
+  </div>
+
+  <div class="menu-item" style="margin-bottom:24px" id="storeCard">
+    <div class="menu-info">
+      <div class="menu-name"><i class="fa-solid fa-store" aria-hidden="true"></i> Status Toko</div>
+      <div class="menu-status" id="storeStatusText">Memuat...</div>
+    </div>
+    <label class="switch" title="Geser untuk buka/tutup toko manual">
+      <input type="checkbox" id="storeToggle" onchange="toggleStore(this.checked)">
+      <span class="slider"></span>
+    </label>
   </div>
 
   <div class="tabs">
@@ -423,6 +435,7 @@ async function doLogin() {
     $("appView").style.display = "block";
     loadOrders();
     loadMenu();
+    loadStoreStatus();
   } catch {
     $("loginErr").style.display = "block";
     btn.innerHTML = "Masuk Sekarang";
@@ -716,13 +729,13 @@ async function loadMenu() {
     $("menuList").innerHTML = items.map(it => `
       <div class="menu-item">
         <div class="menu-info">
-          <div class="menu-name">Cocori ${it.flavor}</div>
+          <div class="menu-name">${it.flavor.startsWith("Paket") ? it.flavor : "Cocori " + it.flavor}</div>
           <div class="menu-status ${it.sold_out ? 'status-empty' : 'status-ready'}">
             ${it.sold_out ? "Stok Habis (Sold Out)" : "Tersedia"}
           </div>
         </div>
         <label class="switch" title="Geser untuk mengatur ketersediaan">
-          <input type="checkbox" ${it.sold_out ? "checked" : ""} onchange="toggleSoldOut('${it.flavor}', this.checked)">
+          <input type="checkbox" ${it.sold_out ? "" : "checked"} onchange="toggleSoldOut('${it.flavor}', !this.checked)">
           <span class="slider"></span>
         </label>
       </div>`).join("");
@@ -741,11 +754,33 @@ async function toggleSoldOut(flavor, sold_out) {
   }
 }
 
+async function loadStoreStatus() {
+  try {
+    const { manual_open } = await api("/api/store");
+    $("storeToggle").checked = manual_open;
+    $("storeStatusText").className = "menu-status " + (manual_open ? "status-ready" : "status-empty");
+    $("storeStatusText").textContent = manual_open ? "Toko dibuka (mengikuti jam operasional otomatis)" : "Toko diliburkan manual oleh admin";
+  } catch (e) {
+    $("storeStatusText").textContent = "Gagal memuat status toko";
+  }
+}
+
+async function toggleStore(manual_open) {
+  try {
+    await api("/api/store", { method: "PATCH", body: JSON.stringify({ manual_open }) });
+    loadStoreStatus();
+  } catch (e) {
+    alert("Gagal update status toko: " + e.message);
+    loadStoreStatus();
+  }
+}
+
 if (ADMIN_PW) {
   $("loginView").style.display = "none";
   $("appView").style.display = "block";
   loadOrders();
   loadMenu();
+  loadStoreStatus();
 }
 </script>
 </body>
