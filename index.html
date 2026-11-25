@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script>(function(){try{var t=localStorage.getItem("cocori_theme");if(t!=="dark"&&t!=="light")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","light")}})();</script>
   <script>
-function kitchenFallback(img, emoji){
-  var fig = img.parentElement;
-  img.remove();
+function kitchenFallback(el, emoji){
+  var fig = el.parentElement;
+  el.remove();
   var ph = document.createElement("div");
   ph.className = "kitchen-ph";
   ph.setAttribute("aria-hidden", "true");
@@ -14,14 +15,14 @@ function kitchenFallback(img, emoji){
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Cocori — Dessert Manis yang Bikin Nagih | Bogor</title>
+<title>Cocori — Strawberry, Marshmallow &amp; Cokelat Lumer | Bogor</title>
 
 <!-- SEO -->
-<meta name="description" content="Cocori adalah dessert lembut berupa kue dengan marshmallow, cokelat lumer, dan strawberry khas Bogor. Tersedia topping coklat serès, Silverqueen, dan lainnya. Mulai Rp10.000.">
+<meta name="description" content="Cocori: cup camilan manis berisi strawberry segar, marshmallow empuk, dan cokelat lumer khas Bogor. Hanya Rp10.000!">
 <meta name="theme-color" content="#e85b76">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Cocori — Sweet in every bite">
-<meta property="og:description" content="Dessert lembut dengan marshmallow, cokelat lumer, dan strawberry. Khusus wilayah Bogor.">
+<meta property="og:description" content="Strawberry, marshmallow, dan cokelat lumer dalam satu cup. Khusus wilayah Bogor.">
 <meta property="og:image" content="cocori.png">
 <link rel="icon" href="logo.png">
 
@@ -38,7 +39,7 @@ function kitchenFallback(img, emoji){
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "Cocori",
-  "description": "Kue lembut dengan marshmallow, cokelat lumer, dan strawberry.",
+  "description": "Cup camilan manis berisi strawberry, marshmallow, dan cokelat lumer.",
   "brand": { "@type": "Brand", "name": "Cocori" },
   "offers": { "@type": "Offer", "price": "10000", "priceCurrency": "IDR", "availability": "https://schema.org/InStock" }
 }
@@ -282,6 +283,8 @@ footer{border-top:1px solid var(--line);padding:30px 24px calc(30px + var(--safe
 .qris-view.show #qrisStep > *:nth-child(4){animation-delay:.24s}
 .qris-view.show #qrisStep > *:nth-child(5){animation-delay:.31s}
 .qris-view.show #qrisStep > *:nth-child(6){animation-delay:.38s}
+.qris-view.show #qrisStep > *:nth-child(7){animation-delay:.45s}
+.qris-view.show #qrisStep > *:nth-child(8){animation-delay:.52s}
 @keyframes up{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
 .simulasi-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:99px;background:#fff4dd;border:1px solid #ffe3a3;color:#9a6b00;font-size:11.5px;font-weight:800;margin-bottom:14px}
 .order-code{font-size:12.5px;color:var(--muted);margin-bottom:10px}
@@ -401,10 +404,21 @@ footer{border-top:1px solid var(--line);padding:30px 24px calc(30px + var(--safe
 .kitchen-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .kitchen-card{margin:0;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .3s var(--out),box-shadow .3s,border-color .3s}
 .kitchen-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--pink-line)}
-.kitchen-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.kitchen-card img,.kitchen-card video{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#000}
 .kitchen-ph{width:100%;aspect-ratio:4/3;display:grid;place-items:center;font-size:56px;background:linear-gradient(135deg,var(--pink-soft),#ffe0e8)}
 .kitchen-card figcaption{padding:15px 18px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px}
 .kitchen-card figcaption .fa-solid{color:var(--pink)}
+
+.bundle-card{margin-top:28px;background:#fff;border:2px solid var(--pink);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+.bundle-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.bundle-badge{background:var(--pink-soft);color:var(--pink2);font-weight:800;font-size:12px;padding:7px 12px;border-radius:99px}
+.bundle-price{text-align:right}
+.bundle-price s{display:block;color:var(--muted);font-weight:700}
+.bundle-price strong{color:var(--pink2);font-size:30px;font-weight:800}
+.bundle-card h3{margin:14px 0 20px;font-size:22px}
+.bundle-btn{width:100%;padding:15px;border:0;border-radius:16px;background:var(--pink);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.bundle-btn:disabled{background:#ccc;cursor:not-allowed}
+.bundle-card.sold-out{opacity:.6}
 
 /* ---------- Customer Review ---------- */
 .review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
@@ -451,6 +465,13 @@ footer{padding:0}
   .footer-main{grid-template-columns:1fr;padding:44px 18px 28px}
   .footer-bottom-inner{justify-content:center;text-align:center}
 }
+
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:32px}
+.team-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:0}
+.team-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.team-card figcaption{padding:16px;display:flex;flex-direction:column;gap:4px}
+.team-card span{color:var(--muted);font-size:14px}
+.team-card a{color:var(--pink2);font-weight:700;font-size:14px;text-decoration:none;margin-top:6px}
 
 /* ---------- Promo ---------- */
 .promo-card{position:relative;overflow:hidden;text-align:center;color:#fff;background:linear-gradient(135deg,#f2718a,var(--pink) 45%,var(--pink2));border-radius:30px;padding:48px 30px;box-shadow:var(--shadow-lg)}
@@ -548,15 +569,126 @@ footer{padding:0}
   .drawer::before{display:none}
 }
 
-/* Tinta gelap / OLED (opsional, hormati preferensi) */
-@media(prefers-color-scheme:dark){
-  /* biarkan tetap light — brand Cocori identik dengan pastel pink.
-     Baris ini sengaja dikosongkan agar tampilan konsisten. */
+/* ============================================================
+   v4 — Diskon, status live, mode gelap, karakter berjalan
+   ============================================================ */
+[hidden]{display:none!important}
+
+/* Harga & diskon */
+.price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.price-old{font-size:.55em;font-weight:700;color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px;opacity:.85;letter-spacing:0}
+.menu-price .price-old{font-size:12.5px;margin-right:7px}
+.tag-promo{background:linear-gradient(135deg,#f2718a,var(--pink2));color:#fff;border-color:transparent;box-shadow:0 8px 18px -8px rgba(232,91,118,.7)}
+.cart-item .price-old{font-size:11.5px;margin-right:5px}
+.summary-row.save-row{color:#1fa65a;font-weight:800}
+.summary-row.save-row .fa-solid{margin-right:4px}
+
+/* Status toko live */
+.dot.off{background:#e0524a;box-shadow:0 0 0 4px rgba(224,82,74,.18)}
+.dot.on{animation:livePulse 2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 4px rgba(69,174,112,.18)}50%{box-shadow:0 0 0 8px rgba(69,174,112,.05)}}
+.store-banner{margin-top:16px;padding:13px 16px;border-radius:14px;background:#fdeaea;color:#c0392b;font-size:13.5px;font-weight:700;line-height:1.5}
+
+/* Tombol tema */
+.theme-toggle{width:46px;height:46px;border:1px solid var(--line);background:#fff;border-radius:14px;cursor:pointer;font-size:17px;color:var(--text);display:grid;place-items:center;transition:transform .2s var(--out),border-color .2s,box-shadow .2s}
+.theme-toggle:hover{border-color:var(--pink-line);transform:translateY(-2px);box-shadow:0 10px 24px -8px rgba(35,24,27,.18)}
+.theme-toggle:active{transform:scale(.95)}
+.theme-toggle .fa-moon{color:#6b5bd6}
+.theme-toggle .fa-sun{color:#f5a623}
+
+/* QRIS */
+.qris-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:99px;background:#e6f8ec;border:1px solid #bfeccf;color:#15803d;font-size:11.5px;font-weight:800;margin-bottom:14px}
+.qris-tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.qris-tool{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--text);font-weight:800;font-size:12.5px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,transform .2s var(--out)}
+.qris-tool:hover{border-color:var(--pink);color:var(--pink);transform:translateY(-1px)}
+
+/* Karakter berjalan (strawberry & marshmallow) */
+.walkers{position:fixed;left:0;right:0;bottom:0;height:78px;z-index:30;pointer-events:none;overflow:hidden}
+.walker{position:absolute;bottom:0;left:0;width:54px;height:60px;will-change:transform}
+.walker .face{width:100%;height:100%}
+.walker.dir-l .face{transform:scaleX(-1)}
+.walker .bob{width:100%;height:100%;transform-origin:50% 100%;animation:bob .55s ease-in-out infinite;filter:drop-shadow(0 6px 6px rgba(90,35,48,.22))}
+.walker .leg{transform-box:fill-box;transform-origin:50% 0;animation:step .55s ease-in-out infinite alternate}
+.walker .leg.l2{animation-direction:alternate-reverse}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+@keyframes step{from{transform:rotate(22deg)}to{transform:rotate(-22deg)}}
+@keyframes walkR{from{transform:translateX(-90px)}to{transform:translateX(calc(100vw + 90px))}}
+@keyframes walkL{from{transform:translateX(calc(100vw + 90px))}to{transform:translateX(-90px)}}
+.walker.w1{animation:walkR 46s linear infinite}
+.walker.w2{animation:walkL 58s linear infinite;animation-delay:-14s}
+.walker.w3{width:42px;height:47px;animation:walkR 72s linear infinite;animation-delay:-38s}
+.walker.w4{width:40px;height:45px;animation:walkL 84s linear infinite;animation-delay:-52s}
+@media(max-width:640px){
+  .walker{width:42px;height:47px}
+  .walker.w3,.walker.w4{display:none}
+  .walkers{height:62px}
 }
+@media (prefers-reduced-motion:reduce){.walkers{display:none}}
+
+/* ============ MODE GELAP ============ */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#171114; --card:#211a1d; --text:#f6ecee; --muted:#b9aab0;
+  --pink:#ff7b95; --pink2:#ee5a79; --pink-soft:#2f1e25; --pink-line:#4d2e39;
+  --line:#3a2d32;
+  --shadow-sm:0 2px 10px rgba(0,0,0,.35);
+  --shadow:0 20px 50px -12px rgba(0,0,0,.6);
+  --shadow-lg:0 40px 90px -20px rgba(0,0,0,.75);
+}
+[data-theme="dark"] body::before{background:radial-gradient(60% 100% at 72% 0%,#3a1f2a 0%,transparent 70%)}
+[data-theme="dark"] header{background:rgba(23,17,20,.82)}
+[data-theme="dark"] header.scrolled{border-bottom-color:rgba(255,255,255,.07);box-shadow:0 8px 28px -14px rgba(0,0,0,.6)}
+[data-theme="dark"] .nav-links a{color:#d2c4c9}
+[data-theme="dark"] .brand img,
+[data-theme="dark"] .footer-logo img{background:#2a2125}
+[data-theme="dark"] .cart-btn,
+[data-theme="dark"] .theme-toggle,
+[data-theme="dark"] .menu-toggle,
+[data-theme="dark"] .variant-pill,
+[data-theme="dark"] .quantity,
+[data-theme="dark"] .quantity button,
+[data-theme="dark"] .qty-stepper,
+[data-theme="dark"] .qty-stepper button,
+[data-theme="dark"] .feature,
+[data-theme="dark"] .about-card,
+[data-theme="dark"] .menu-card,
+[data-theme="dark"] .kitchen-card,
+[data-theme="dark"] .review-card,
+[data-theme="dark"] .find-card,
+[data-theme="dark"] .drawer,
+[data-theme="dark"] .qris-tool,
+[data-theme="dark"] .new-order-btn,
+[data-theme="dark"] .address-block input,
+[data-theme="dark"] .address-block select{background:var(--card);color:var(--text)}
+[data-theme="dark"] .variant-pill.active{background:linear-gradient(135deg,#f2718a,var(--pink2));color:#fff}
+[data-theme="dark"] .variant-pill.sold-out{background:#2a2325}
+[data-theme="dark"] .cart-item{background:#2a2125}
+[data-theme="dark"] .mobile-nav{background:rgba(33,26,29,.97)}
+[data-theme="dark"] .fact{background:linear-gradient(135deg,#2a1d23,#331f29);color:#dacbd0}
+[data-theme="dark"] .review-text{color:#dccdd2}
+[data-theme="dark"] .footer-col a{color:#bcadb2}
+[data-theme="dark"] .footer-bottom-inner{color:#a99ca1}
+[data-theme="dark"] .floating{background:rgba(42,33,37,.92);color:var(--text)}
+[data-theme="dark"] .product-card{background:#3a2229}
+[data-theme="dark"] .glow{background:radial-gradient(circle,#6a2f40,transparent 65%)}
+[data-theme="dark"] .feature-icon,
+[data-theme="dark"] .menu-thumb,
+[data-theme="dark"] .kitchen-ph{background:linear-gradient(135deg,#34202a,#43283a)}
+[data-theme="dark"] .success-card{background:linear-gradient(180deg,#2a2125,#2f2027)}
+[data-theme="dark"] .sc-circle{fill:#173a27}
+[data-theme="dark"] .address-error,
+[data-theme="dark"] .store-banner{background:#3d1f22;color:#ff9a90}
+[data-theme="dark"] .qris-badge{background:#143324;border-color:#235a3b;color:#6ee7a0}
+[data-theme="dark"] .qris-frame{background:#fff} /* QR tetap putih agar mudah discan */
+[data-theme="dark"] .summary-row.save-row{color:#4ade80}
+[data-theme="dark"] .toast{border:1px solid rgba(255,255,255,.1)}
+[data-theme="dark"] .checkout{border:1px solid var(--line)}
+[data-theme="dark"] .walker .bob{filter:drop-shadow(0 6px 6px rgba(0,0,0,.5))}
+[data-theme="dark"] *{scrollbar-color:var(--pink-line) transparent}
 
 /* Print */
 @media print{
-  header,footer,.drawer,.overlay,.toasts,.floating,.glow{display:none!important}
+  header,footer,.drawer,.overlay,.toasts,.floating,.glow,.walkers,.theme-toggle{display:none!important}
   body::before{display:none}
   main{padding:0}
   .section{break-inside:avoid}
@@ -582,6 +714,7 @@ footer{padding:0}
       <a href="#kontak">Kontak</a>
     </div>
     <div class="nav-actions">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Ganti ke mode gelap" aria-pressed="false"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
       <button type="button" class="menu-toggle" id="menuToggle" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobileNav">
         <i class="fa-solid fa-bars" aria-hidden="true"></i>
       </button>
@@ -597,7 +730,7 @@ footer{padding:0}
 <nav class="mobile-nav" id="mobileNav" aria-label="Navigasi mobile">
   <a href="#produk"><i class="fa-solid fa-house" aria-hidden="true"></i> Home</a>
   <a href="#tentang"><i class="fa-solid fa-book-open" aria-hidden="true"></i> About Us</a>
-  <a href="#menu"><i class="fa-solid fa-cake-candles" aria-hidden="true"></i> Our Menu</a>
+  <a href="#menu"><i class="fa-solid fa-heart" aria-hidden="true"></i> Our Menu</a>
   <a href="#kenapa"><i class="fa-solid fa-star" aria-hidden="true"></i> Why Choose Us</a>
   <a href="#dapur"><i class="fa-solid fa-kitchen-set" aria-hidden="true"></i> Behind the Kitchen</a>
   <a href="#review"><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> Customer Review</a>
@@ -610,11 +743,12 @@ footer{padding:0}
 <main>
 <section class="hero" id="produk">
   <div>
-    <div class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Signature Dessert</div>
+    <div class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Signature Treat</div>
     <h1>Cocori.<br>Sweet in<br><span class="grad">every bite.</span></h1>
-    <p class="description"><strong>Cocori</strong> adalah dessert unik berupa kue lembut yang dipadukan dengan marshmallow, cokelat lumer, dan strawberry. Perpaduan manis, creamy, dan sedikit segar dalam satu sajian yang bikin penasaran.</p>
+    <p class="description"><strong>Cocori</strong> adalah camilan manis dalam satu cup: strawberry segar, marshmallow empuk, dan cokelat lumer yang disiram di atasnya. Manis, creamy, dan sedikit segar — gampang dibawa, bikin penasaran.</p>
     <div class="price-row">
-      <div class="price">Rp10.000</div>
+      <div class="price"><s class="price-old" data-price-old>Rp10.000</s><span data-price-now>Rp9.000</span></div>
+      <div class="tag tag-promo" data-promo-tag><i class="fa-solid fa-tags" aria-hidden="true"></i> Diskon Rp1.000</div>
       <div class="tag"><i class="fa-solid fa-heart" aria-hidden="true"></i> Our Favorite</div>
     </div>
 
@@ -623,7 +757,7 @@ footer{padding:0}
       <div class="variant-options" id="variantOptions" role="group" aria-labelledby="flavorLabel">
         <button type="button" class="variant-pill active" data-flavor="Original" aria-pressed="true" onclick="selectFlavor(this)">Original</button>
         <button type="button" class="variant-pill" data-flavor="Matcha" aria-pressed="false" onclick="selectFlavor(this)">Matcha</button>
-        <button type="button" class="variant-pill" data-flavor="Milk" aria-pressed="false" onclick="selectFlavor(this)">Milk</button>
+        <button type="button" class="variant-pill" data-flavor="Vanilla" aria-pressed="false" onclick="selectFlavor(this)">Vanilla</button>
       </div>
     </div>
 
@@ -648,10 +782,10 @@ footer{padding:0}
   <div class="product-visual">
     <div class="glow" aria-hidden="true"></div>
     <div class="product-card">
-      <img src="cocori.png" alt="Cocori — kue dengan marshmallow, cokelat lumer, dan strawberry" width="600" height="600" decoding="async">
+      <img src="cocori.png" alt="Cocori — cup berisi strawberry, marshmallow, dan cokelat lumer" width="600" height="600" decoding="async">
     </div>
-    <div class="floating f1"><span class="dot" aria-hidden="true"></span> Freshly made today</div>
-    <div class="floating f2" aria-hidden="true"><i class="fa-solid fa-chocolate-bar"></i> Cokelat lumer</div>
+    <div class="floating f1" id="liveBadge" role="status"><span class="dot" id="liveDot" aria-hidden="true"></span><span id="liveText">Mengecek status…</span></div>
+    <div class="floating f2" aria-hidden="true"><i class="fa-solid fa-cookie-bite"></i> Cokelat lumer</div>
   </div>
 </section>
 
@@ -661,40 +795,40 @@ footer{padding:0}
     <article class="about-card">
       <div class="about-tag"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Our Story</div>
       <h3>Cerita di Balik Cocori</h3>
-      <p>Cocori lahir dari kecintaan pada dessert yang manis, lembut, dan bikin nagih. Nama <strong>Cocori</strong> dipilih agar mudah diingat dan mencerminkan karakternya: manis, ringan, dan sedikit playful. Berawal dari dapur kecil di Bogor, kini Cocori jadi favorit para pencinta manis.</p>
+      <p>Cocori lahir dari kecintaan pada camilan manis yang simpel tapi bikin nagih: strawberry, marshmallow, dan cokelat. Nama <strong>Cocori</strong> dipilih agar mudah diingat dan mencerminkan karakternya: manis, ringan, dan sedikit playful. Berawal dari dapur kecil di Bogor, kini Cocori jadi favorit para pencinta manis.</p>
     </article>
     <article class="about-card">
       <div class="about-tag"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Our Mission</div>
       <h3>Misi Kami</h3>
-      <p>Membawa kebahagiaan lewat dessert berkualitas dengan harga bersahabat. Setiap Cocori dibuat fresh setiap hari dengan bahan pilihan, supaya setiap gigitan selalu <em>sweet in every bite</em>.</p>
+      <p>Membawa kebahagiaan lewat camilan manis berkualitas dengan harga bersahabat. Setiap Cocori dibuat fresh setiap hari dengan bahan pilihan, supaya setiap gigitan selalu <em>sweet in every bite</em>.</p>
     </article>
   </div>
   <div class="features">
-    <div class="feature"><div class="feature-icon"><i class="fa-solid fa-cake-candles" aria-hidden="true"></i></div><h3>Kue Lembut</h3><p>Bagian dasar Cocori menggunakan kue lembut sebagai fondasi dessert yang nyaman dinikmati.</p></div>
+    <div class="feature"><div class="feature-icon"><i class="fa-solid fa-apple-whole" aria-hidden="true"></i></div><h3>Strawberry Segar</h3><p>Strawberry memberi rasa segar yang menyeimbangkan manisnya cokelat dan marshmallow.</p></div>
     <div class="feature"><div class="feature-icon"><i class="fa-solid fa-cloud" aria-hidden="true"></i></div><h3>Marshmallow</h3><p>Marshmallow memberikan tekstur lembut dan rasa manis yang khas.</p></div>
-    <div class="feature"><div class="feature-icon"><i class="fa-solid fa-ice-cream" aria-hidden="true"></i></div><h3>Cokelat &amp; Strawberry</h3><p>Cokelat lumer yang kaya dipadukan dengan strawberry untuk memberikan rasa yang lebih seimbang.</p></div>
+    <div class="feature"><div class="feature-icon"><i class="fa-solid fa-cookie-bite" aria-hidden="true"></i></div><h3>Cokelat Lumer</h3><p>Cokelat yang kaya disiram di atas strawberry dan marshmallow untuk rasa yang pas.</p></div>
   </div>
 </section>
 
 <section class="section" id="funfact">
   <h2>Tentang Cocori</h2>
-  <div class="fact"><strong>Asal nama.</strong> Nama Cocori dipilih agar mudah diingat dan mencerminkan karakter dessert ini: manis, ringan, dan sedikit playful.</div>
+  <div class="fact"><strong>Asal nama.</strong> Nama Cocori dipilih agar mudah diingat dan mencerminkan karakter camilan ini: manis, ringan, dan sedikit playful.</div>
   <div class="fact"><strong>Kombinasi rasa.</strong> Cokelat lumer dan strawberry dipadukan untuk menyeimbangkan rasa manis dengan sentuhan fruity yang segar.</div>
-  <div class="fact"><strong>Tekstur marshmallow.</strong> Marshmallow dipanggang sebentar sehingga bagian luar sedikit karamel, namun bagian dalam tetap lembut.</div>
+  <div class="fact"><strong>Tekstur marshmallow.</strong> Marshmallow yang empuk berpadu dengan cokelat dan strawberry, jadi manisnya terasa seimbang di setiap suapan.</div>
   <div class="fact"><strong>Topping favorit.</strong> Tambahkan coklat serès, Silverqueen, keju, Oreo crush, atau almond slice untuk pengalaman rasa yang berbeda setiap kali pesan.</div>
 </section>
 
 <section class="section reveal" id="menu">
   <h2>Our Menu</h2>
-  <p class="description">Pilih rasa favoritmu — semua varian dibuat dengan kue lembut, marshmallow, cokelat lumer, dan strawberry.</p>
+  <p class="description">Pilih rasa favoritmu — semua varian dibuat dengan strawberry, marshmallow, dan cokelat lumer.</p>
   <div class="menu-grid">
     <article class="menu-card">
-      <div class="menu-thumb" aria-hidden="true"><i class="fa-solid fa-cake-candles"></i></div>
+      <div class="menu-thumb" aria-hidden="true"><i class="fa-solid fa-heart"></i></div>
       <div class="menu-info">
         <span class="menu-tag">Menu 1</span>
         <h3>Cocori Original</h3>
-        <p>Klasik favorit: kue lembut dengan marshmallow dan cokelat lumer.</p>
-        <div class="menu-price">Rp10.000</div>
+        <p>Klasik favorit: strawberry segar, marshmallow empuk, dan cokelat lumer dalam satu cup.</p>
+        <div class="menu-price"><s class="price-old" data-price-old>Rp10.000</s><span data-price-now>Rp9.000</span></div>
       </div>
     </article>
     <article class="menu-card">
@@ -702,12 +836,12 @@ footer{padding:0}
       <div class="menu-info">
         <span class="menu-tag">Menu 2</span>
         <h3>Cocori Matcha</h3>
-        <p>Matcha premium yang creamy. Tersedia juga rasa Milk.</p>
-        <div class="menu-price">Rp10.000</div>
+        <p>Matcha premium yang creamy. Tersedia juga rasa Vanilla.</p>
+        <div class="menu-price"><s class="price-old" data-price-old>Rp10.000</s><span data-price-now>Rp9.000</span></div>
       </div>
     </article>
   </div>
-  <a class="link-arrow" href="https://wa.me/6281234567890?text=Halo%20Cocori%2C%20boleh%20lihat%20menu%20lengkapnya%3F" target="_blank" rel="noopener">View Full Menu <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+  <a class="link-arrow" href="https://wa.me/62895415977158?text=Halo%20Cocori%2C%20boleh%20lihat%20menu%20lengkapnya%3F" target="_blank" rel="noopener">View Full Menu <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
 </section>
 
 <section class="section reveal" id="kenapa">
@@ -715,7 +849,7 @@ footer{padding:0}
   <div class="features">
     <div class="feature"><div class="feature-icon"><i class="fa-solid fa-wheat-awn" aria-hidden="true"></i></div><h3>Quality Ingredients</h3><p>Kami memakai bahan pilihan berkualitas — dari marshmallow lembut sampai cokelat yang benar-benar lumer.</p></div>
     <div class="feature"><div class="feature-icon"><i class="fa-solid fa-fire" aria-hidden="true"></i></div><h3>Freshly Made</h3><p>Setiap pesanan dibuat fresh di hari yang sama, bukan stok lama. Dijamin lembut saat sampai di tanganmu.</p></div>
-    <div class="feature"><div class="feature-icon"><i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i></div><h3>Affordable Price</h3><p>Dessert berkualitas mulai Rp10.000 — ramah di kantong tanpa mengorbankan rasa.</p></div>
+    <div class="feature"><div class="feature-icon"><i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i></div><h3>Affordable Price</h3><p><p>Cuma Rp10.000 per cup. Ada juga Paket Hemat, cocori + coklat serès cuma Rp10.000 dari harga normal Rp12.000. Ramah di kantong tanpa mengorbankan rasa.</p></p></div>
   </div>
 </section>
 
@@ -724,17 +858,21 @@ footer{padding:0}
   <p class="description">Dari dapur kami ke tanganmu — setiap Cocori melewati proses yang teliti, mulai dari pemilihan bahan, pemasakan, sampai dikemas rapi agar tetap lembut saat sampai.</p>
   <div class="kitchen-grid">
     <figure class="kitchen-card">
-      <img src="foto-proses-masak.jpg" alt="Proses memasak Cocori di dapur" loading="lazy" onerror="kitchenFallback(this,'👩‍🍳')">
+      <video src="video-proses-masak.mp4" poster="foto-proses-masak.jpg" controls muted playsinline preload="metadata" onerror="kitchenFallback(this,'👩‍🍳')">
+        Browser kamu tidak mendukung video.
+      </video>
       <figcaption><i class="fa-solid fa-utensils" aria-hidden="true"></i> Proses Masak</figcaption>
     </figure>
     <figure class="kitchen-card">
-      <img src="foto-bahan.jpg" alt="Bahan-bahan segar pembuatan Cocori" loading="lazy" onerror="kitchenFallback(this,'🥣')">
+      <video src="video-bahan.mp4" poster="foto-bahan.jpg" controls muted playsinline preload="metadata" onerror="kitchenFallback(this,'🥣')">
+        Browser kamu tidak mendukung video.
+      </video>
       <figcaption><i class="fa-solid fa-carrot" aria-hidden="true"></i> Bahan Segar</figcaption>
     </figure>
     <figure class="kitchen-card">
-      <img src="foto-packaging.jpg" alt="Packaging Cocori yang rapi" loading="lazy" onerror="kitchenFallback(this,'📦')">
-      <figcaption><i class="fa-solid fa-box" aria-hidden="true"></i> Packaging</figcaption>
-    </figure>
+  <img src="foto-packaging.jpg" alt="Packaging Cocori" loading="lazy">
+  <figcaption><i class="fa-solid fa-box" aria-hidden="true"></i> Packaging</figcaption>
+</figure>
   </div>
 </section>
 
@@ -747,22 +885,105 @@ footer{padding:0}
         <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
       </div>
       <p class="review-text">"Lembut banget, cokelatnya lumer dan marshmallownya juicy. Sekali coba langsung nagih, jadi langganan tiap minggu!"</p>
-      <div class="reviewer"><div class="avatar" aria-hidden="true">A</div><div><strong>Customer A</strong><span>Pembeli · Bogor</span></div></div>
+      <div class="reviewer"><div class="avatar" aria-hidden="true">A</div><div><strong>Alfiyah</strong><span>Pembeli · Bogor</span></div></div>
     </article>
     <article class="review-card">
       <div class="stars" aria-label="Rating 5 dari 5">
         <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
       </div>
       <p class="review-text">"Packaging rapi, datang masih fresh. Rasa matchanya gak bikin eneg, manisnya pas. Recommended!"</p>
-      <div class="reviewer"><div class="avatar" aria-hidden="true">B</div><div><strong>Customer B</strong><span>Pembeli · Bogor Barat</span></div></div>
+      <div class="reviewer"><div class="avatar" aria-hidden="true">T</div><div><strong>Tanti</strong><span>Pembeli · Bogor Barat</span></div></div>
     </article>
     <article class="review-card">
       <div class="stars" aria-label="Rating 4 dari 5">
         <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
       </div>
       <p class="review-text">"Harga murah tapi rasanya premium. Topping Silverqueen wajib banget dicoba. Bakal order lagi buat acara keluarga."</p>
-      <div class="reviewer"><div class="avatar" aria-hidden="true">C</div><div><strong>Customer C</strong><span>Pembeli · Tanah Sareal</span></div></div>
+      <div class="reviewer"><div class="avatar" aria-hidden="true">S</div><div><strong>Safa</strong><span>Pembeli · Tanah Sareal</span></div></div>
     </article>
+  </div>
+</section>
+
+<section class="section reveal" id="tim">
+  <h2>Our Team</h2>
+  <p class="description">Orang-orang di balik dapur Cocori.</p>
+  <div class="team-grid">
+  <figure class="team-card">
+    <img src="ketua.jpg" alt="Restu Hermawan" loading="lazy">
+    <figcaption>
+      <strong>Restu Hermawan</strong>
+      <span>Ketua</span>
+      <a href="https://www.instagram.com/restuhermawan21?dmpr=MTlndW5rdmV5M2Vwdg==" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @restuhermawan21</a>
+    </figcaption>
+  </figure>
+
+  <figure class="team-card">
+    <img src="tim-produksi.jpg" alt="Genta" loading="lazy">
+    <figcaption>
+      <strong>Genta</strong>
+      <span>Tim Produksi</span>
+      <a href="https://www.instagram.com/p/DcknMSBk2MQ/?dmpr=enJkcnFzYjJrcGQx" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @genta</a>
+    </figcaption>
+  </figure>
+
+  <figure class="team-card">
+    <img src="tim-produksi1.jpg" alt="Rizwan" loading="lazy">
+    <figcaption>
+      <strong>Rizwan</strong>
+      <span>Tim Produksi</span>
+      <a href="https://www.instagram.com/riswanadietya?jplx=dnN0c2hpOW16eGZ2" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @riswanadietya</a>
+    </figcaption>
+  </figure>
+
+  <figure class="team-card">
+    <img src="tim-produksi2.jpg" alt="Rima" loading="lazy">
+    <figcaption>
+      <strong>Rima</strong>
+      <span>Tim Produksi</span>
+      <a href="https://www.instagram.com/_.ima________?knvt=ajdxdGI4cGhxOGJp" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @_.ima___</a>
+    </figcaption>
+  </figure>
+
+  <figure class="team-card">
+    <img src="sosmed.jpg" alt="Rani Yuniar" loading="lazy">
+    <figcaption>
+      <strong>Rani Yuniar</strong>
+      <span>Tim Sosmed</span>
+      <a href="https://www.instagram.com/swetty.ran1?gwpx=M29tNWg5MW8xcThk" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @swetty.ran1</a>
+    </figcaption>
+  </figure>
+
+<figure class="team-card">
+    <img src="web.jpg" alt="Raka" loading="lazy">
+    <figcaption>
+      <strong>Raka</strong>
+      <span>Pembuat Website</span>
+      <a href="https://www.instagram.com/winnahsaja?jplx=dnN0c2hpOW16eGZ2" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @winnahsaja</a>
+    </figcaption>
+  </figure>
+
+
+  <figure class="team-card">
+    <img src="keuangan.jpg" alt="Rafka" loading="lazy">
+    <figcaption>
+      <strong>Rafka</strong>
+      <span>Keuangan</span>
+      <a href="https://www.instagram.com/rfka.liebert?evlk=MWIzb3AxdHgwZnI5OA==" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @rfka.liebert</a>
+    </figcaption>
+  </figure>
+</div>
+</section>
+
+<section class="section reveal" id="paket">
+  <h2>Paket Hemat</h2>
+  <p class="description">Penawaran terbatas, selagi masih tersedia!</p>
+  <div class="bundle-card" id="bundleCard">
+    <div class="bundle-top">
+      <span class="bundle-badge">HEMAT 2K · TERBATAS</span>
+      <div class="bundle-price"><s>Rp12.000</s><strong>Rp10.000</strong></div>
+    </div>
+    <h3>Cocori Original + Coklat Serès</h3>
+    <button type="button" class="bundle-btn" id="bundleBtn" onclick="addBundle()">Pesan paket ini</button>
   </div>
 </section>
 
@@ -774,20 +995,20 @@ footer{padding:0}
       <i class="fa-brands fa-instagram" aria-hidden="true"></i>
       Instagram @cocori
     </a>
-    <a class="social-btn wa" href="https://wa.me/6281234567890" target="_blank" rel="noopener">
+    <a class="social-btn wa" href="https://wa.me/62895415977158" target="_blank" rel="noopener">
       <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
       WhatsApp Cocori
     </a>
   </div>
 </section>
 
-<section class="section reveal" id="promo">
+<section class="section reveal" id="promo" style="display:none">
   <div class="promo-card">
     <span class="promo-badge"><i class="fa-solid fa-fire" aria-hidden="true"></i> Special Offer</span>
     <h2>Weekend Bundle</h2>
     <div class="promo-price"><s>Rp3.000</s><strong>Rp1.000</strong></div>
     <p class="promo-note">Available every Saturday &amp; Sunday — klaim promonya cuma di akhir pekan!</p>
-    <a class="promo-btn" href="https://wa.me/6281234567890?text=Halo%20Cocori%2C%20saya%20mau%20claim%20promo%20Weekend%20Bundle!" target="_blank" rel="noopener">
+    <a class="promo-btn" href="https://wa.me/62895415977158?text=Halo%20Cocori%2C%20saya%20mau%20claim%20promo%20Weekend%20Bundle!" target="_blank" rel="noopener">
       <i class="fa-solid fa-bolt" aria-hidden="true"></i> Order Now
     </a>
   </div>
@@ -798,13 +1019,13 @@ footer{padding:0}
   <div class="find-grid">
     <div class="find-card">
       <h3><i class="fa-solid fa-store" aria-hidden="true"></i> Our Store</h3>
-      <p>Cocori — Dessert khas Bogor<br>Jl. Contoh Alamat No. 10, Bogor, Jawa Barat</p>
+      <p>Cocori — Camilan manis khas Bogor<br>Jl. Letjen Ibrahim Adjie No. 178, Bogor, Jawa Barat</p>
     </div>
-    <div class="find-card"><h3><i class="fa-solid fa-clock" aria-hidden="true"></i> Opening Hours</h3><p>Monday – Saturday<br>10.00 – 22.00</p></div>
-    <div class="find-card"><h3><i class="fa-solid fa-phone" aria-hidden="true"></i> Contact</h3><p><a href="tel:088888888">088888888</a></p></div>
+    <div class="find-card"><h3><i class="fa-solid fa-clock" aria-hidden="true"></i> Opening Hours</h3><p>Monday – Saturday<br>07.00 – 21.00</p></div>
+    <div class="find-card"><h3><i class="fa-solid fa-phone" aria-hidden="true"></i> Contact</h3><p><a href="tel:0895415977158">0895415977158</a></p></div>
     <div class="find-card">
       <h3><i class="fa-solid fa-motorcycle" aria-hidden="true"></i> Order</h3>
-      <p><a href="https://wa.me/6281234567890" target="_blank" rel="noopener">WhatsApp</a> | <a href="https://instagram.com/cocori" target="_blank" rel="noopener">Instagram</a></p>
+      <p><a href="https://wa.me/62895415977158" target="_blank" rel="noopener">WhatsApp</a> | <a href="https://www.instagram.com/cocori.1?bqrl=MWNqMHJnZzQ4Y2lsdg==" target="_blank" rel="noopener">Instagram</a></p>
       <p><a class="direction-btn" href="https://www.google.com/maps/dir/?api=1&destination=Bogor,+Jawa+Barat" target="_blank" rel="noopener"><i class="fa-solid fa-diamond-turn-right" aria-hidden="true"></i> Get Direction</a></p>
     </div>
   </div>
@@ -819,13 +1040,13 @@ footer{padding:0}
   <h2>Contact Us</h2>
   <p class="description">Have questions? Kami senang mendengar kamu! Untuk kerja sama, catering, atau pemesanan dalam jumlah besar, hubungi kami melalui WhatsApp, Instagram, atau email.</p>
   <div class="social-row">
-    <a class="social-btn wa" href="https://wa.me/6281234567890?text=Halo%20Cocori%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener">
+    <a class="social-btn wa" href="https://wa.me/62895415977158?text=Halo%20Cocori%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener">
       <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Chat via WhatsApp
     </a>
-    <a class="social-btn ig" href="https://instagram.com/cocori" target="_blank" rel="noopener">
+    <a class="social-btn ig" href="https://www.instagram.com/cocori.1?bqrl=MWNqMHJnZzQ4Y2lsdg==" target="_blank" rel="noopener">
       <i class="fa-brands fa-instagram" aria-hidden="true"></i> DM Instagram
     </a>
-    <a class="social-btn email" href="https://mail.google.com/mail/?view=cm&fs=1&to=halo@cocori.id&su=Pertanyaan%20untuk%20Cocori&body=Halo%20Cocori%2C%20saya%20ingin%20bertanya%20tentang" target="_blank" rel="noopener">
+    <a class="social-btn email" href="https://mail.google.com/mail/?view=cm&fs=1&to=cocori.bogor@gmail.com&su=Pertanyaan%20untuk%20Cocori&body=Halo%20Cocori%2C%20saya%20ingin%20bertanya%20tentang" target="_blank" rel="noopener">
       <i class="fa-solid fa-envelope" aria-hidden="true"></i> Email Kami
     </a>
   </div>
@@ -836,11 +1057,11 @@ footer{padding:0}
   <div class="footer-main">
     <div class="footer-brand">
       <div class="footer-logo"><img src="logo.png" alt="Logo Cocori" width="36" height="36">Cocori</div>
-      <p class="footer-tagline">Dessert lembut dengan marshmallow, cokelat lumer, dan strawberry — dibuat fresh setiap hari khas Bogor.</p>
+      <p class="footer-tagline">Strawberry, marshmallow, dan cokelat lumer dalam satu cup — dibuat fresh setiap hari khas Bogor.</p>
       <div class="footer-social">
-        <a href="https://instagram.com/cocori" target="_blank" rel="noopener" aria-label="Instagram Cocori"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
-        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp Cocori"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=halo@cocori.id" target="_blank" rel="noopener" aria-label="Email Cocori"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        <a href="https://www.instagram.com/cocori.1?bqrl=MWNqMHJnZzQ4Y2lsdg==" target="_blank" rel="noopener" aria-label="Instagram Cocori"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://wa.me/62895415977158" target="_blank" rel="noopener" aria-label="WhatsApp Cocori"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=cocori.bogor@gmail.com" target="_blank" rel="noopener" aria-label="Email Cocori"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
       </div>
     </div>
     <div class="footer-col">
@@ -865,8 +1086,8 @@ footer{padding:0}
       <h4>Bantuan</h4>
       <ul>
         <li><a href="#kontak">Contact Us</a></li>
-        <li><a href="https://wa.me/6281234567890" target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=halo@cocori.id" target="_blank" rel="noopener">Email</a></li>
+        <li><a href="https://wa.me/62895415977158" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=cocori.bogor@gmail.com" target="_blank" rel="noopener">Email</a></li>
         <li><a href="#lokasi">Find Us</a></li>
       </ul>
     </div>
@@ -874,7 +1095,6 @@ footer{padding:0}
   <div class="footer-bottom">
     <div class="footer-bottom-inner">
       <span>© 2026 Cocori. Seluruh hak cipta dilindungi.</span>
-      <span>Dibuat dengan 🤍 di Bogor</span>
     </div>
   </div>
 </footer>
@@ -892,6 +1112,7 @@ footer{padding:0}
   <div id="cartContent"></div>
 
   <div class="cart-total">
+    <div class="summary-row save-row" id="saveRow" hidden><span><i class="fa-solid fa-tags" aria-hidden="true"></i> Hemat promo</span><span id="saveAmt">-Rp0</span></div>
     <div class="summary-row total"><span>Total</span><span id="total" aria-live="polite">Rp0</span></div>
 
     <div class="address-block" id="addressBlock">
@@ -921,14 +1142,18 @@ footer{padding:0}
 
     <div class="qris-view" id="qrisView">
       <div id="qrisStep">
-        <span class="simulasi-badge"><i class="fa-solid fa-flask" aria-hidden="true"></i> Mode demo — pembayaran disimulasikan</span>
+        <span class="qris-badge"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> QRIS resmi Cocori · DANA Bisnis</span>
         <div class="order-code" id="orderCode"></div>
         <div class="qris-frame" id="qrisImgWrap">
-          <img src="dana-qris.png" alt="Kode QRIS pembayaran Cocori" onerror="qrisFallback()">
+          <img src="dana-qris.jpg" alt="Kode QRIS pembayaran Cocori" onerror="qrisFallback()">
           <div class="qris-scanline" aria-hidden="true"></div>
         </div>
         <div class="qris-hint">Scan lalu bayar sesuai total: <strong id="qrisTotal">Rp0</strong></div>
-        <p class="qris-sub">Bisa pakai GoPay, OVO, DANA, ShopeePay, atau m-banking.</p>
+        <div class="qris-tools">
+          <button type="button" class="qris-tool" onclick="copyTotal()"><i class="fa-regular fa-copy" aria-hidden="true"></i> Salin nominal</button>
+          <a class="qris-tool" href="dana-qris.jpg" download="QRIS-Cocori.png"><i class="fa-solid fa-download" aria-hidden="true"></i> Simpan QRIS</a>
+        </div>
+        <p class="qris-sub">Bisa dibayar pakai DANA, GoPay, OVO, ShopeePay, atau m-banking. Pastikan nominalnya sama persis dengan total. Kalau scan dari HP yang sama, pakai “Simpan QRIS” lalu unggah dari galeri.</p>
         <button type="button" class="paid-btn" id="paidBtn" onclick="confirmPaid()">
           <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Saya Sudah Bayar
         </button>
@@ -951,11 +1176,58 @@ footer{padding:0}
     <h3 id="successTitle">Pesanan Diteruskan ke Admin</h3>
     <div class="success-amount" id="successAmount">Rp0</div>
     <div class="success-code" id="successOrderCode"></div>
-    <p class="success-note">Status pesanan: <strong>menunggu konfirmasi pembayaran</strong>. Di versi demo ini pembayaran tidak diverifikasi otomatis — admin akan mengonfirmasi lewat WhatsApp yang terbuka setelah ini.</p>
+    <p class="success-note">Status pesanan: <strong>menunggu konfirmasi pembayaran</strong>. Admin akan mengecek pembayaran di DANA lalu mengonfirmasi lewat WhatsApp yang terbuka setelah ini.</p>
     <button type="button" class="new-order-btn" id="successNewBtn" onclick="startNewOrder()">
       <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Pesan Lagi
     </button>
   </div>
+</div>
+
+
+<!-- Karakter berjalan di sisi bawah layar (dekoratif) -->
+<div class="walkers" aria-hidden="true">
+  <div class="walker w1 dir-r"><div class="face"><div class="bob"><svg viewBox="0 0 64 72" width="100%" height="100%" aria-hidden="true" focusable="false">
+  <g class="leg l1"><rect x="20" y="56" width="8" height="13" rx="4" fill="#b5304a"/></g>
+  <g class="leg l2"><rect x="36" y="56" width="8" height="13" rx="4" fill="#b5304a"/></g>
+  <path d="M32 60C13 60 5 41 8 28c2-8 9-12 24-12s22 4 24 12c3 13-5 32-24 32z" fill="#e8344f"/>
+  <path d="M32 19c-4-9-13-9-15-5 4 0 6 1 8 3-6-1-10 1-11 5 6-1 12 0 18 2 6-2 12-3 18-2-1-4-5-6-11-5 2-2 4-3 8-3-2-4-11-4-15 5z" fill="#5fae3b"/>
+  <g fill="#ffd36b"><ellipse cx="17" cy="34" rx="1.4" ry="2"/><ellipse cx="47" cy="34" rx="1.4" ry="2"/><ellipse cx="22" cy="48" rx="1.4" ry="2"/><ellipse cx="42" cy="48" rx="1.4" ry="2"/><ellipse cx="32" cy="53" rx="1.4" ry="2"/><ellipse cx="32" cy="27" rx="1.4" ry="2"/></g>
+  <circle cx="24" cy="38" r="2.8" fill="#2b1417"/><circle cx="40" cy="38" r="2.8" fill="#2b1417"/>
+  <circle cx="23.2" cy="37" r=".9" fill="#fff"/><circle cx="39.2" cy="37" r=".9" fill="#fff"/>
+  <ellipse cx="18" cy="44" rx="4" ry="2.5" fill="#ff9bb0" opacity=".8"/><ellipse cx="46" cy="44" rx="4" ry="2.5" fill="#ff9bb0" opacity=".8"/>
+  <path d="M27 44q5 5 10 0" fill="none" stroke="#2b1417" stroke-width="2" stroke-linecap="round"/>
+</svg></div></div></div>
+  <div class="walker w2 dir-l"><div class="face"><div class="bob"><svg viewBox="0 0 64 72" width="100%" height="100%" aria-hidden="true" focusable="false">
+  <g class="leg l1"><rect x="22" y="56" width="8" height="13" rx="4" fill="#d9c9cd"/></g>
+  <g class="leg l2"><rect x="36" y="56" width="8" height="13" rx="4" fill="#d9c9cd"/></g>
+  <rect x="12" y="16" width="40" height="44" rx="15" fill="#fff" stroke="#e6d8dc" stroke-width="2"/>
+  <path d="M12 30c0-9 6-15 15-15h10c9 0 15 6 15 15 0 3-2 5-4 5-3 0-3-5-6-5s-3 8-6 8-3-6-6-6-3 7-6 7-3-6-6-6-4 6-7 6-5-3-5-9z" fill="#7a4326"/>
+  <path d="M18 20c2-3 6-4 10-4" fill="none" stroke="#a5683f" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="25" cy="42" r="2.6" fill="#2b1417"/><circle cx="39" cy="42" r="2.6" fill="#2b1417"/>
+  <ellipse cx="19.5" cy="48" rx="3.6" ry="2.3" fill="#ffb3c3" opacity=".85"/><ellipse cx="44.5" cy="48" rx="3.6" ry="2.3" fill="#ffb3c3" opacity=".85"/>
+  <path d="M28 47q4 4 8 0" fill="none" stroke="#2b1417" stroke-width="2" stroke-linecap="round"/>
+</svg></div></div></div>
+  <div class="walker w3 dir-r"><div class="face"><div class="bob"><svg viewBox="0 0 64 72" width="100%" height="100%" aria-hidden="true" focusable="false">
+  <g class="leg l1"><rect x="22" y="56" width="8" height="13" rx="4" fill="#d9c9cd"/></g>
+  <g class="leg l2"><rect x="36" y="56" width="8" height="13" rx="4" fill="#d9c9cd"/></g>
+  <rect x="12" y="16" width="40" height="44" rx="15" fill="#fff" stroke="#e6d8dc" stroke-width="2"/>
+  <path d="M12 30c0-9 6-15 15-15h10c9 0 15 6 15 15 0 3-2 5-4 5-3 0-3-5-6-5s-3 8-6 8-3-6-6-6-3 7-6 7-3-6-6-6-4 6-7 6-5-3-5-9z" fill="#7a4326"/>
+  <path d="M18 20c2-3 6-4 10-4" fill="none" stroke="#a5683f" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="25" cy="42" r="2.6" fill="#2b1417"/><circle cx="39" cy="42" r="2.6" fill="#2b1417"/>
+  <ellipse cx="19.5" cy="48" rx="3.6" ry="2.3" fill="#ffb3c3" opacity=".85"/><ellipse cx="44.5" cy="48" rx="3.6" ry="2.3" fill="#ffb3c3" opacity=".85"/>
+  <path d="M28 47q4 4 8 0" fill="none" stroke="#2b1417" stroke-width="2" stroke-linecap="round"/>
+</svg></div></div></div>
+  <div class="walker w4 dir-l"><div class="face"><div class="bob"><svg viewBox="0 0 64 72" width="100%" height="100%" aria-hidden="true" focusable="false">
+  <g class="leg l1"><rect x="20" y="56" width="8" height="13" rx="4" fill="#b5304a"/></g>
+  <g class="leg l2"><rect x="36" y="56" width="8" height="13" rx="4" fill="#b5304a"/></g>
+  <path d="M32 60C13 60 5 41 8 28c2-8 9-12 24-12s22 4 24 12c3 13-5 32-24 32z" fill="#e8344f"/>
+  <path d="M32 19c-4-9-13-9-15-5 4 0 6 1 8 3-6-1-10 1-11 5 6-1 12 0 18 2 6-2 12-3 18-2-1-4-5-6-11-5 2-2 4-3 8-3-2-4-11-4-15 5z" fill="#5fae3b"/>
+  <g fill="#ffd36b"><ellipse cx="17" cy="34" rx="1.4" ry="2"/><ellipse cx="47" cy="34" rx="1.4" ry="2"/><ellipse cx="22" cy="48" rx="1.4" ry="2"/><ellipse cx="42" cy="48" rx="1.4" ry="2"/><ellipse cx="32" cy="53" rx="1.4" ry="2"/><ellipse cx="32" cy="27" rx="1.4" ry="2"/></g>
+  <circle cx="24" cy="38" r="2.8" fill="#2b1417"/><circle cx="40" cy="38" r="2.8" fill="#2b1417"/>
+  <circle cx="23.2" cy="37" r=".9" fill="#fff"/><circle cx="39.2" cy="37" r=".9" fill="#fff"/>
+  <ellipse cx="18" cy="44" rx="4" ry="2.5" fill="#ff9bb0" opacity=".8"/><ellipse cx="46" cy="44" rx="4" ry="2.5" fill="#ff9bb0" opacity=".8"/>
+  <path d="M27 44q5 5 10 0" fill="none" stroke="#2b1417" stroke-width="2" stroke-linecap="round"/>
+</svg></div></div></div>
 </div>
 
 <div class="toasts" id="toasts" aria-live="polite"></div>
@@ -963,8 +1235,11 @@ footer{padding:0}
 <script>
 "use strict";
 
-const PRICE = 10000;
-const WA_NUMBER = "6281234567890";
+const BASE_PRICE = 10000;                       // harga normal
+const PROMO = { active: false, discount: 1000 }; // ubah active:false untuk mematikan diskon
+const BUNDLE = { id: "Paket Hemat", flavor: "Original", topping: "Coklat Serès", normal: 12000, price: 10000 };
+const PRICE = PROMO.active ? BASE_PRICE - PROMO.discount : BASE_PRICE; // harga jual sekarang
+const WA_NUMBER = "62895415977158";
 
 const TOPPINGS = [
   { name: "Coklat Serès", price: 2000 },
@@ -979,7 +1254,8 @@ const AREAS = [
   "Pasirkuda", "Gunung Batu", "Bogor Barat", "Ciomas", "Jl. Letjen Ibrahim Adjie",
 ];
 
-const STORAGE = { cart: "cocori_cart_v2", orders: "cocori_orders_v1" };
+const STORAGE = { cart: "cocori_cart_v2", orders: "cocori_orders_v1", theme: "cocori_theme" };
+const LIVE_MS = 8000; // cek status menu/toko setiap 8 detik
 
 let cart = loadCart();
 let selectedFlavor = "Original";
@@ -1011,6 +1287,7 @@ function comboKey(flavor, toppings) {
   return flavor + "|" + [...toppings].sort().join(",");
 }
 function unitPrice(item) {
+  if (item.bundle) return BUNDLE.price;
   return PRICE + item.toppings.reduce((s, n) => s + (TOPPING_MAP[n] || 0), 0);
 }
 
@@ -1056,7 +1333,7 @@ function flyToCart() {
   const s = src.getBoundingClientRect(), d = dst.getBoundingClientRect();
   const g = document.createElement("div");
   g.className = "fly-ghost";
-  g.innerHTML = '<i class="fa-solid fa-cake-candles" aria-hidden="true"></i>';
+  g.innerHTML = '<i class="fa-solid fa-heart" aria-hidden="true"></i>';
   g.style.left = (s.left + s.width / 2 - 23) + "px";
   g.style.top = (s.top + s.height / 2 - 23) + "px";
   document.body.appendChild(g);
@@ -1132,25 +1409,42 @@ function selectFlavor(btn) {
   selectedFlavor = btn.dataset.flavor;
 }
 
+let soldOutFlavors = new Set();
+let menuLoaded = false;
+
 async function loadMenuStatus() {
   try {
-    const items = await (await fetch("/api/menu")).json();
-    const soldOutSet = new Set(items.filter(it => it.sold_out).map(it => it.flavor));
-    document.querySelectorAll("#variantOptions .variant-pill").forEach(btn => {
-      const isSoldOut = soldOutSet.has(btn.dataset.flavor);
-      btn.classList.toggle("sold-out", isSoldOut);
-      btn.disabled = isSoldOut;
-      if (isSoldOut && !btn.querySelector(".pill-price")) {
-        btn.innerHTML += ' <span class="pill-price">Habis</span>';
+    const res = await fetch("/api/menu", { cache: "no-store" });
+    if (!res.ok) return;
+    const items = await res.json();
+    if (!Array.isArray(items)) return;
+    const next = new Set(items.filter(it => it.sold_out).map(it => it.flavor));
+
+    if (menuLoaded) {
+      next.forEach(f => { if (!soldOutFlavors.has(f)) showToast(`Cocori ${f} baru saja habis`, "info"); });
+      soldOutFlavors.forEach(f => { if (!next.has(f)) showToast(`Cocori ${f} tersedia lagi! 🎉`); });
+    }
+    soldOutFlavors = next;
+    menuLoaded = true;
+    renderBundle();
+
+    const pills = [...document.querySelectorAll("#variantOptions .variant-pill")];
+    pills.forEach(btn => {
+      const isSoldOut = next.has(btn.dataset.flavor);
+      if (btn.classList.contains("sold-out") !== isSoldOut) {
+        btn.classList.toggle("sold-out", isSoldOut);
+        btn.innerHTML = btn.dataset.flavor + (isSoldOut ? ' <span class="pill-price">Habis</span>' : "");
       }
+      btn.disabled = isSoldOut;
       if (isSoldOut && btn.classList.contains("active")) {
         btn.classList.remove("active");
-        const firstAvailable = [...document.querySelectorAll("#variantOptions .variant-pill")].find(b => !b.classList.contains("sold-out"));
+        btn.setAttribute("aria-pressed", "false");
+        const firstAvailable = pills.find(b => !next.has(b.dataset.flavor));
         if (firstAvailable) selectFlavor(firstAvailable);
       }
     });
   } catch {
-    /* kalau API belum siap, web tetap jalan seperti biasa tanpa status sold-out */
+    /* kalau API belum siap / offline, tampilan terakhir dipertahankan */
   }
 }
 
@@ -1280,7 +1574,7 @@ function renderCart() {
       <div class="cart-item__info">
         <strong>Cocori ${it.flavor}</strong>
         ${toppingLine}
-        <small>${rupiah(unitPrice(it))} / pcs</small>
+        <small>${PROMO.active ? `<s class="price-old">${rupiah(unitPrice(it) + PROMO.discount)}</s>` : ""}${rupiah(unitPrice(it))} / pcs</small>
       </div>
       <div class="cart-item__right">
         <div class="qty-stepper" role="group" aria-label="Jumlah Cocori ${it.flavor}">
@@ -1295,10 +1589,48 @@ function renderCart() {
   }).join("");
 }
 
+function cartSavings() {
+  return Object.values(cart).reduce((s, it) =>
+    s + (it.bundle ? (BUNDLE.normal - BUNDLE.price) * it.qty
+                   : (PROMO.active ? PROMO.discount * it.qty : 0)), 0);
+}
+
+function addBundle() {
+  if (soldOutFlavors.has(BUNDLE.id)) { showToast("Paket hemat sudah habis", "info"); return; }
+  const key = "BUNDLE|" + BUNDLE.id;
+  if (cart[key]) cart[key].qty += 1;
+  else cart[key] = { flavor: BUNDLE.flavor, toppings: [BUNDLE.topping], qty: 1, bundle: true };
+  persistCart();
+  markLastItemNew();
+  showToast("Paket Hemat masuk keranjang");
+  flyToCart();
+}
+
+function renderBundle() {
+  const btn = $("bundleBtn");
+  if (!btn) return;
+  const out = soldOutFlavors.has(BUNDLE.id);
+  btn.disabled = out;
+  btn.textContent = out ? "Paket habis" : "Pesan paket ini";
+  $("bundleCard").classList.toggle("sold-out", out);
+}
+
 function renderTotal() {
   const subtotal = Object.values(cart).reduce((s, it) => s + unitPrice(it) * it.qty, 0);
   animateValue($("total"), lastTotal, subtotal, 450);
   lastTotal = subtotal;
+  const save = cartSavings();
+  $("saveRow").hidden = save <= 0;
+  $("saveAmt").textContent = "-" + rupiah(save);
+}
+
+function renderPrices() {
+  document.querySelectorAll("[data-price-now]").forEach(el => { el.textContent = rupiah(PRICE); });
+  document.querySelectorAll("[data-price-old]").forEach(el => { el.textContent = rupiah(BASE_PRICE); el.hidden = !PROMO.active; });
+  document.querySelectorAll("[data-promo-tag]").forEach(el => {
+    el.hidden = !PROMO.active;
+    el.innerHTML = `<i class="fa-solid fa-tags" aria-hidden="true"></i> Diskon ${rupiah(PROMO.discount)}`;
+  });
 }
 
 function openDrawer() {
@@ -1352,6 +1684,15 @@ async function checkout() {
     showToast("Keranjang masih kosong.", "error");
     return;
   }
+  if (storeOpen === false) {
+    showToast("Maaf, toko sedang tutup. Coba lagi saat buka ya.", "error");
+    return;
+  }
+  const soldInCart = [...new Set(Object.values(cart).filter(it => soldOutFlavors.has(it.flavor)).map(it => it.flavor))];
+  if (soldInCart.length) {
+    showToast(`Cocori ${soldInCart.join(", ")} baru saja habis. Hapus dulu dari keranjang.`, "error");
+    return;
+  }
   clearErrors();
 
   const name = $("customerName").value.trim();
@@ -1381,6 +1722,7 @@ async function checkout() {
     flavor: it.flavor,
     toppings: [...it.toppings],
     qty: it.qty,
+    bundle: !!it.bundle,
   }));
 
   currentOrder = {
@@ -1388,6 +1730,7 @@ async function checkout() {
     customerName: name,
     items: itemsPayload,
     subtotal,
+    discount: cartSavings(),
     total: subtotal,
     area: areaName,
     address: detail,
@@ -1405,6 +1748,7 @@ async function checkout() {
         area: areaName,
         address: detail,
         items: itemsPayload,
+        discount: cartSavings(),
         total: subtotal,
       }),
     }).then(r => r.ok ? r.json() : null);
@@ -1472,7 +1816,7 @@ async function confirmPaid() {
   if (!currentOrder) return;
   const btn = $("paidBtn");
   btn.disabled = true;
-  btn.innerHTML = `<span class="spinner"></span> Memverifikasi...`;
+  btn.innerHTML = `<span class="spinner"></span> Mengirim konfirmasi...`;
 
   try {
     await fetch("/api/orders", {
@@ -1508,6 +1852,7 @@ function sendOrderToWhatsApp(order) {
     "Halo, saya baru saja order di website Cocori.",
     `Kode Order : ${order.code}`,
     `Pesanan    : ${itemsText}`,
+    ...(order.discount ? [`Diskon     : -${rupiah(order.discount)} (promo ${rupiah(PROMO.discount)}/pcs)`] : []),
     `Total      : ${rupiah(order.total)}`,
     `Wilayah    : ${order.area}`,
     `Alamat     : ${order.address}`,
@@ -1520,6 +1865,76 @@ function startNewOrder() {
   hideSuccess();
   resetPaymentView();
   closeDrawer();
+}
+
+const OPEN_HOUR = 7;   // 7.00
+const CLOSE_HOUR = 21;  // 21.00
+
+function isWithinOperatingHours() {
+  const hour = new Date().getHours();
+  return hour >= OPEN_HOUR && hour < CLOSE_HOUR;
+}
+
+let storeOpen = null; // null = belum dicek
+
+async function checkStoreStatus() {
+  let manualOpen = true;
+  try {
+    const res = await fetch("/api/store", { cache: "no-store" });
+    if (res.ok) manualOpen = (await res.json()).manual_open !== false;
+  } catch {
+    /* kalau API belum siap, anggap buka manual, tetap cek jam */
+  }
+
+  const withinHours = isWithinOperatingHours();
+  const isOpen = manualOpen && withinHours;
+
+  if (storeOpen !== null && storeOpen !== isOpen) {
+    showToast(isOpen ? "Toko sudah buka, yuk pesan! 🍓" : "Toko baru saja tutup.", isOpen ? "success" : "info");
+  }
+  storeOpen = isOpen;
+
+  const addBtn = $("addBtn");
+  const checkoutBtn = $("checkoutBtn");
+  let banner = $("storeClosedBanner");
+
+  // Badge live di hero
+  $("liveDot").className = "dot " + (isOpen ? "on" : "off");
+  $("liveText").textContent = isOpen
+    ? `Buka sekarang · tutup ${CLOSE_HOUR}.00`
+    : (!manualOpen ? "Toko sedang libur" : `Tutup · buka ${OPEN_HOUR}.00`);
+
+  if (!isOpen) {
+    const reason = !manualOpen
+      ? "Toko sedang diliburkan oleh admin."
+      : `Toko buka setiap hari jam ${OPEN_HOUR}.00 – ${CLOSE_HOUR}.00 WIB. Saat ini di luar jam operasional.`;
+    if (!banner) {
+      banner = document.createElement("div");
+      banner.id = "storeClosedBanner";
+      banner.className = "store-banner";
+      banner.setAttribute("role", "status");
+      addBtn.closest(".actions").insertAdjacentElement("afterend", banner);
+    }
+    banner.textContent = "🔒 " + reason;
+    banner.hidden = false;
+  } else if (banner) {
+    banner.hidden = true;
+  }
+  addBtn.disabled = !isOpen;
+  addBtn.style.opacity = isOpen ? "" : ".5";
+  addBtn.style.cursor = isOpen ? "" : "not-allowed";
+  checkoutBtn.disabled = !isOpen;
+  checkoutBtn.style.opacity = isOpen ? "" : ".5";
+  checkoutBtn.style.cursor = isOpen ? "" : "not-allowed";
+}
+
+function checkPromoVisibility() {
+  const day = new Date().getDay(); // 0 = Minggu, 6 = Sabtu
+  const isWeekend = day === 0 || day === 6;
+  const promoSection = $("promo");
+  const promoNavLinks = document.querySelectorAll('a[href="#promo"]');
+  if (promoSection) promoSection.style.display = isWeekend ? "" : "none";
+  promoNavLinks.forEach(a => a.style.display = isWeekend ? "" : "none");
 }
 
 function qrisFallback() {
@@ -1554,6 +1969,66 @@ function initReveal() {
   els.forEach(el => { el.classList.add("reveal"); io.observe(el); });
 }
 
+function applyTheme(t, persist) {
+  const dark = t === "dark";
+  document.documentElement.setAttribute("data-theme", t);
+  const btn = $("themeToggle");
+  if (btn) {
+    btn.innerHTML = dark
+      ? '<i class="fa-solid fa-sun" aria-hidden="true"></i>'
+      : '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
+    btn.setAttribute("aria-label", dark ? "Ganti ke mode terang" : "Ganti ke mode gelap");
+    btn.setAttribute("aria-pressed", String(dark));
+  }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", dark ? "#171114" : "#e85b76");
+  if (persist) { try { localStorage.setItem(STORAGE.theme, t); } catch {} }
+}
+
+function initTheme() {
+  applyTheme(document.documentElement.getAttribute("data-theme") || "light", false);
+  $("themeToggle").addEventListener("click", () => {
+    applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark", true);
+  });
+  // ikuti pengaturan HP/laptop selama pengguna belum memilih sendiri
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  const follow = e => {
+    let saved = null;
+    try { saved = localStorage.getItem(STORAGE.theme); } catch {}
+    if (!saved) applyTheme(e.matches ? "dark" : "light", false);
+  };
+  if (mq.addEventListener) mq.addEventListener("change", follow);
+}
+
+async function copyTotal() {
+  if (!currentOrder) return;
+  const text = String(currentOrder.total);
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch {}
+    ta.remove();
+  }
+  showToast(`Nominal ${rupiah(currentOrder.total)} disalin`);
+}
+
+/* ---------- Real-time (polling ringan) ---------- */
+let liveTimer = null;
+async function refreshLive() {
+  checkPromoVisibility();
+  await Promise.all([loadMenuStatus(), checkStoreStatus()]);
+}
+function startLive() {
+  clearInterval(liveTimer);
+  liveTimer = setInterval(() => { if (!document.hidden) refreshLive(); }, LIVE_MS);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshLive(); });
+  window.addEventListener("online", refreshLive);
+  window.addEventListener("focus", refreshLive);
+}
+
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
@@ -1582,6 +2057,11 @@ function init() {
   resetPaymentView();
   initReveal();
   loadMenuStatus();
+  checkPromoVisibility();
+  checkStoreStatus();
+  initTheme();
+  renderPrices();
+  startLive();
 
   const headerEl = document.querySelector("header");
   let lastY = 0;
