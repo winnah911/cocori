@@ -1847,12 +1847,16 @@ function renderCart() {
   box.innerHTML = entries.map(([key, it]) => {
     const toppingLine = it.toppings.length
       ? `<small class="toppings-line">+ ${it.toppings.join(", +")}</small>` : "";
+          const b = it.bundle ? bundleOf(it) : null;
+    const title = it.bundle || ("Cocori " + it.flavor);
+    const oldPrice = b ? b.normal : (PROMO.active ? unitPrice(it) + PROMO.discount : 0);
+    const oldPriceHtml = oldPrice ? `<s class="price-old">${rupiah(oldPrice)}</s>` : "";
     return `
     <div class="cart-item">
       <div class="cart-item__info">
-        <strong>Cocori ${it.flavor}</strong>
+        <strong>${title}</strong>
         ${toppingLine}
-        <small>${PROMO.active ? `<s class="price-old">${rupiah(unitPrice(it) + PROMO.discount)}</s>` : ""}${rupiah(unitPrice(it))} / pcs</small>
+        <small>${oldPriceHtml}${rupiah(unitPrice(it))} / pcs</small>
       </div>
       <div class="cart-item__right">
         <div class="qty-stepper" role="group" aria-label="Jumlah Cocori ${it.flavor}">
@@ -2438,6 +2442,12 @@ function init() {
   });
 })();
 </script>
+
+<style>
+  .drawer{overflow-y:auto !important;overscroll-behavior:contain}
+  .drawer #cartContent{flex:0 0 auto !important;min-height:96px;max-height:34vh;overflow-y:auto}
+  .drawer .cart-total{flex-shrink:0}
+</style>
 
 </body>
 </html>
