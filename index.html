@@ -1046,7 +1046,7 @@ footer{padding:0}
     <a class="social-btn ig" href="https://www.instagram.com/cocori.1?bqrl=MWNqMHJnZzQ4Y2lsdg==" target="_blank" rel="noopener">
       <i class="fa-brands fa-instagram" aria-hidden="true"></i> DM Instagram
     </a>
-    <a class="social-btn email" href="https://mail.google.com/mail/?view=cm&fs=1&to=cocori.bogor@gmail.com&su=Pertanyaan%20untuk%20Cocori&body=Halo%20Cocori%2C%20saya%20ingin%20bertanya%20tentang" target="_blank" rel="noopener">
+    <a class="social-btn email" href="mailto:cocoribogor@gmail.com?subject=Pertanyaan%20untuk%20Cocori&body=Halo%20Cocori%2C%20saya%20ingin%20bertanya%20tentang" target="_blank" rel="noopener">
       <i class="fa-solid fa-envelope" aria-hidden="true"></i> Email Kami
     </a>
   </div>
@@ -1061,7 +1061,7 @@ footer{padding:0}
       <div class="footer-social">
         <a href="https://www.instagram.com/cocori.1?bqrl=MWNqMHJnZzQ4Y2lsdg==" target="_blank" rel="noopener" aria-label="Instagram Cocori"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
         <a href="https://wa.me/62895415977158" target="_blank" rel="noopener" aria-label="WhatsApp Cocori"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=cocori.bogor@gmail.com" target="_blank" rel="noopener" aria-label="Email Cocori"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        <a href="mailto:cocoribogor@gmail.com?subject=Pertanyaan%20untuk%20Cocori&body=Halo%20Cocori%2C%20saya%20ingin%20bertanya%20tentang" target="_blank" rel="noopener" aria-label="Email Cocori"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
       </div>
     </div>
     <div class="footer-col">
@@ -1087,7 +1087,7 @@ footer{padding:0}
       <ul>
         <li><a href="#kontak">Contact Us</a></li>
         <li><a href="https://wa.me/62895415977158" target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=cocori.bogor@gmail.com" target="_blank" rel="noopener">Email</a></li>
+        <li><a href="mailto:cocoribogor@gmail.com?subject=Pertanyaan%20untuk%20Cocori&body=Halo%20Cocori%2C%20saya%20ingin%20bertanya%20tentang" target="_blank" rel="noopener">Email</a></li>
         <li><a href="#lokasi">Find Us</a></li>
       </ul>
     </div>
@@ -1133,6 +1133,15 @@ footer{padding:0}
         <label for="detailAddress">Alamat Lengkap</label>
         <input type="text" id="detailAddress" placeholder="Contoh: Jl. Melati No. 5, patokan dekat masjid" autocomplete="street-address">
         <div class="address-error" id="detailError" role="alert"></div>
+      </div>
+            <div class="field">
+        <label for="customerPhone">Nomor WhatsApp</label>
+        <input type="tel" id="customerPhone" placeholder="Contoh: 08123456789" autocomplete="tel" inputmode="tel">
+        <div class="address-error" id="phoneError" role="alert"></div>
+      </div>
+      <div class="field">
+        <label for="orderNote">Catatan <span style="text-transform:none;letter-spacing:0">(opsional)</span></label>
+        <input type="text" id="orderNote" placeholder="Contoh: tanpa keju, antar jam 3" maxlength="200">
       </div>
     </div>
 
@@ -1665,7 +1674,7 @@ function showError(id, msg) {
   el.classList.add("show");
 }
 function clearErrors() {
-  ["nameError", "areaError", "detailError"].forEach(id => {
+  ["nameError", "areaError", "detailError", "phoneError"].forEach(id => {
     const el = $(id);
     el.textContent = "";
     el.classList.remove("show");
@@ -1698,7 +1707,10 @@ async function checkout() {
   const name = $("customerName").value.trim();
   const areaName = $("areaSelect").value;
   const detail = $("detailAddress").value.trim();
+  const phone = $("customerPhone").value.replace(/[\s-]/g, "").replace(/^\+?62/, "0");
+  const note = $("orderNote").value.trim();
   let valid = true;
+
 
   if (!name) {
     showError("nameError", "Nama pemesan wajib diisi.");
@@ -1710,6 +1722,10 @@ async function checkout() {
   }
   if (detail.length < 10) {
     showError("detailError", "Tulis alamat lengkap (minimal 10 karakter). Contoh: Jl. Melati No. 5, patokan dekat masjid.");
+    valid = false;
+  }
+  if (!/^08\d{8,12}$/.test(phone)) {
+    showError("phoneError", "Masukkan nomor WhatsApp yang benar, contoh: 08123456789.");
     valid = false;
   }
   if (!valid) {
