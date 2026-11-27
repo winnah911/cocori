@@ -65,6 +65,30 @@ module.exports = async (req, res) => {
       return res.status(200).json(data);
     }
 
+          // 1) tolak kalau toko diliburkan manual dari admin
+      const st = await sb("store_settings?id=eq.1&select=manual_open");
+      if (st.ok) {
+        const srows = await st.json();
+        if (srows[0] && srows[0].manual_open === false) {
+          return res.status(403).json({ error: "Toko sedang tutup" });
+        }
+      }
+
+      // 2) tolak di luar jam buka (07.00-21.00 WIB)
+      const hour = Number(new Intl.DateTimeFormat("en-GB", {
+        hour: "numeric", hourCycle: "h23", timeZone: "Asia/Jakarta",
+      }).format(new Date()));
+      if (hour < 7 || hour >= 21) {
+        return res.status(403).json({ error: "Toko sedang tutup" });
+      }
+
+      // 3) batasi lonjakan order (maks 15 per menit, semua pembeli)
+      const since = new Date(Date.now() - 60000).toISOString();
+      const rc = await sb(`orders?select=order_code&created_at=gte.${since}`);
+      if (rc.ok && (await rc.json()).length >= 15) {
+        return res.status(429).json({ error: "Terlalu banyak order, coba lagi sebentar" });
+      }
+
     // ---------- POST: customer bikin order baru ----------
     if (req.method === "POST") {
       const { customer_name, area, address, items } = req.body || {};
