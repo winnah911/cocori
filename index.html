@@ -693,9 +693,270 @@ footer{padding:0}
   main{padding:0}
   .section{break-inside:avoid}
 }
-  /* Keranjang bisa di-scroll di layar pendek */
-.drawer{overflow-y:auto;overscroll-behavior:contain}
-#cartContent{flex:0 0 auto;min-height:90px;max-height:34vh}
+
+/* ============================================================
+   COCORI v5 — Flavor-themed UI (strawberry / matcha / vanilla)
+   Tampilan saja; tidak mengubah fungsi apa pun.
+   ============================================================ */
+
+/* Flavor color tokens */
+:root{
+  --strawberry:#e85b76; --strawberry2:#d8405f; --strawberry-soft:#fff0f3; --strawberry-line:#ffd9e1;
+  --matcha:#5fae3b; --matcha2:#3f8f2a; --matcha-soft:#eef6e6; --matcha-line:#cfe6bc;
+  --vanilla:#e8c98a; --vanilla2:#a87f3a; --vanilla-soft:#fdf6e6; --vanilla-line:#f0e0bf;
+  --choco:#7a4326; --choco2:#5a3018;
+}
+
+/* ---------- Variasi tombol rasa: tiap pill punya warna khas ---------- */
+/* Original = stroberi (merah muda) — tetap pakai gradasi merah muda */
+.variant-pill[data-flavor="Original"].active{
+  background:linear-gradient(135deg,#f2718a,var(--strawberry2));
+  color:#fff;border-color:transparent;
+  box-shadow:0 8px 18px -6px rgba(232,91,118,.55);
+  animation:pillPop .3s var(--spring);
+}
+/* Matcha = hijau matcha */
+.variant-pill[data-flavor="Matcha"].active{
+  background:linear-gradient(135deg,#7ac75a,var(--matcha2));
+  color:#fff;border-color:transparent;
+  box-shadow:0 8px 18px -6px rgba(95,174,59,.55);
+  animation:pillPop .3s var(--spring);
+}
+/* Vanilla = marshmallow / krim putih keemasan */
+.variant-pill[data-flavor="Vanilla"].active{
+  background:linear-gradient(135deg,#f7e3b8,var(--vanilla2));
+  color:#5a4a2a;border-color:transparent;
+  box-shadow:0 8px 18px -6px rgba(168,127,58,.5);
+  animation:pillPop .3s var(--spring);
+}
+/* Hover preview tiap rasa */
+.variant-pill[data-flavor="Original"]:hover{border-color:var(--strawberry)}
+.variant-pill[data-flavor="Matcha"]:hover{border-color:var(--matcha)}
+.variant-pill[data-flavor="Vanilla"]:hover{border-color:var(--vanilla)}
+
+/* Titik indikator warna di depan label rasa */
+.variant-pill[data-flavor]{position:relative;padding-left:30px}
+.variant-pill[data-flavor]::before{
+  content:"";position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  width:10px;height:10px;border-radius:50%;background:#ddd;transition:background .3s,box-shadow .3s;
+}
+.variant-pill[data-flavor="Original"]::before{background:linear-gradient(135deg,#f2718a,var(--strawberry2))}
+.variant-pill[data-flavor="Matcha"]::before{background:linear-gradient(135deg,#7ac75a,var(--matcha2))}
+.variant-pill[data-flavor="Vanilla"]::before{background:linear-gradient(135deg,#f7e3b8,var(--vanilla2))}
+.variant-pill[data-flavor].active::before{background:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+.variant-pill[data-flavor="Vanilla"].active::before{background:#5a4a2a;box-shadow:0 0 0 2px rgba(90,74,42,.25)}
+
+/* ---------- Topping pill: marshmallow, cokelat, keju, dll. ---------- */
+.variant-pill.topping-pill[data-topping="Coklat Serès"].active{
+  background:linear-gradient(135deg,#a5643c,var(--choco2));color:#fff;
+  box-shadow:0 8px 18px -6px rgba(122,67,38,.55);animation:pillPop .3s var(--spring);
+}
+.variant-pill.topping-pill[data-topping="Silverqueen"].active{
+  background:linear-gradient(135deg,#8a6a52,#5a3f2a);color:#fff;
+  box-shadow:0 8px 18px -6px rgba(90,63,42,.55);animation:pillPop .3s var(--spring);
+}
+.variant-pill.topping-pill[data-topping="Oreo Crush"].active{
+  background:linear-gradient(135deg,#4a4a52,#1f1f24);color:#fff;
+  box-shadow:0 8px 18px -6px rgba(40,40,46,.55);animation:pillPop .3s var(--spring);
+}
+.variant-pill.topping-pill[data-topping="Keju"].active{
+  background:linear-gradient(135deg,#f7d96a,#e0a93a);color:#5a4a2a;
+  box-shadow:0 8px 18px -6px rgba(224,169,58,.55);animation:pillPop .3s var(--spring);
+}
+.variant-pill.topping-pill[data-topping="Almond Slice"].active{
+  background:linear-gradient(135deg,#dcb98a,#b88a52);color:#fff;
+  box-shadow:0 8px 18px -6px rgba(184,138,82,.55);animation:pillPop .3s var(--spring);
+}
+/* Dot indicator untuk topping */
+.variant-pill.topping-pill{position:relative;padding-left:30px}
+.variant-pill.topping-pill::before{
+  content:"";position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  width:10px;height:10px;border-radius:50%;background:#ddd;transition:background .3s,box-shadow .3s;
+}
+.variant-pill.topping-pill[data-topping="Coklat Serès"]::before{background:linear-gradient(135deg,#a5643c,var(--choco2))}
+.variant-pill.topping-pill[data-topping="Silverqueen"]::before{background:linear-gradient(135deg,#8a6a52,#5a3f2a)}
+.variant-pill.topping-pill[data-topping="Oreo Crush"]::before{background:linear-gradient(135deg,#4a4a52,#1f1f24)}
+.variant-pill.topping-pill[data-topping="Keju"]::before{background:linear-gradient(135deg,#f7d96a,#e0a93a)}
+.variant-pill.topping-pill[data-topping="Almond Slice"]::before{background:linear-gradient(135deg,#dcb98a,#b88a52)}
+.variant-pill.topping-pill.active::before{background:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+
+/* CTA shimmer lembut */
+.primary{background-size:200% 200%;background-position:0% 50%;animation:ctaShimmer 6s ease infinite}
+@keyframes ctaShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* Garis aksen di bawah judul section */
+.section h2{position:relative;padding-bottom:14px}
+.section h2::after{
+  content:"";position:absolute;left:0;bottom:0;width:60px;height:4px;border-radius:99px;
+  background:linear-gradient(90deg,var(--pink),var(--pink2));transition:background .4s;
+}
+
+/* ============================================================
+   PERUBAHAN WARNA SAAT MEMILIH RASA
+   - Matcha  → seluruh halaman bernuansa hijau matcha
+   - Vanilla → seluruh halaman bernuansa putih krim / marshmallow
+   - Original → tetap stroberi (default)
+   Variabel inti di-scope ke mode terang agar tidak menimpa mode gelap.
+   Aksen (tombol, pill, dll.) berlaku di kedua mode.
+   ============================================================ */
+
+/* ---- MATCHA THEME ---- */
+:root[data-theme="light"][data-flavor-theme="matcha"]{
+  --bg:#f5faf0; --pink:#5fae3b; --pink2:#3f8f2a; --pink-soft:#eef6e6; --pink-line:#cfe6bc;
+  --line:#dce8d0;
+  --shadow-sm:0 2px 10px rgba(63,143,42,.06);
+  --shadow:0 20px 50px -12px rgba(63,143,42,.18);
+  --shadow-lg:0 40px 90px -20px rgba(63,143,42,.3);
+}
+[data-flavor-theme="matcha"] body::before{background:radial-gradient(60% 100% at 72% 0%,#d8efc4 0%,transparent 70%)}
+[data-flavor-theme="matcha"] header{background:rgba(245,250,240,.85)}
+[data-flavor-theme="matcha"] .primary{
+  background:linear-gradient(135deg,#7ac75a,var(--matcha) 40%,var(--matcha2));
+  color:#fff;box-shadow:0 14px 30px -8px rgba(95,174,59,.55);
+}
+[data-flavor-theme="matcha"] .primary:hover{box-shadow:0 20px 40px -10px rgba(95,174,59,.6)}
+[data-flavor-theme="matcha"] .cart-count{background:linear-gradient(135deg,var(--matcha),var(--matcha2));box-shadow:0 3px 8px rgba(95,174,59,.4)}
+[data-flavor-theme="matcha"] .cart-btn .fa-cart-shopping{color:var(--matcha)}
+[data-flavor-theme="matcha"] .product-card{background:#dcefc4;box-shadow:0 0 0 3px rgba(95,174,59,.22),0 40px 90px -20px rgba(63,143,42,.35)}
+[data-flavor-theme="matcha"] .glow{background:radial-gradient(circle,#c5e8a8,transparent 65%)}
+[data-flavor-theme="matcha"] .eyebrow{color:var(--matcha);background:var(--matcha-soft);border-color:var(--matcha-line)}
+[data-flavor-theme="matcha"] .tag{background:var(--matcha-soft);border-color:var(--matcha-line);color:var(--matcha)}
+[data-flavor-theme="matcha"] .tag-promo{background:linear-gradient(135deg,#7ac75a,var(--matcha2));color:#fff;border-color:transparent}
+[data-flavor-theme="matcha"] h1 .grad{background:linear-gradient(120deg,var(--matcha) 10%,#8bc96f 55%,var(--matcha2));-webkit-background-clip:text;background-clip:text;color:transparent}
+[data-flavor-theme="matcha"] .feature-icon,
+[data-flavor-theme="matcha"] .menu-thumb,
+[data-flavor-theme="matcha"] .kitchen-ph{background:linear-gradient(135deg,var(--matcha-soft),#d8efc4);color:var(--matcha)}
+[data-flavor-theme="matcha"] .menu-price{color:var(--matcha)}
+[data-flavor-theme="matcha"] .fact{background:linear-gradient(135deg,#f3faec,#eef6e6);border-color:var(--matcha-line);color:#5a6d4a}
+[data-flavor-theme="matcha"] .fact strong{color:var(--matcha)}
+[data-flavor-theme="matcha"] .about-tag{background:var(--matcha-soft);border-color:var(--matcha-line);color:var(--matcha)}
+[data-flavor-theme="matcha"] .about-card::before{background:linear-gradient(90deg,var(--matcha),var(--matcha2))}
+[data-flavor-theme="matcha"] .feature:hover,
+[data-flavor-theme="matcha"] .about-card:hover,
+[data-flavor-theme="matcha"] .menu-card:hover,
+[data-flavor-theme="matcha"] .kitchen-card:hover,
+[data-flavor-theme="matcha"] .review-card:hover,
+[data-flavor-theme="matcha"] .find-card:hover{border-color:var(--matcha-line)}
+[data-flavor-theme="matcha"] .nav-links a:hover{color:var(--matcha)}
+[data-flavor-theme="matcha"] .nav-links a:hover::after{background:linear-gradient(90deg,var(--matcha),var(--matcha2))}
+[data-flavor-theme="matcha"] .menu-tag{background:var(--matcha-soft);border-color:var(--matcha-line);color:var(--matcha)}
+[data-flavor-theme="matcha"] .link-arrow{color:var(--matcha)}
+[data-flavor-theme="matcha"] .link-arrow:hover{color:var(--matcha2)}
+[data-flavor-theme="matcha"] .bundle-card{border-color:var(--matcha)}
+[data-flavor-theme="matcha"] .bundle-badge{background:var(--matcha-soft);color:var(--matcha2)}
+[data-flavor-theme="matcha"] .bundle-price strong{color:var(--matcha2)}
+[data-flavor-theme="matcha"] .bundle-btn{background:var(--matcha)}
+[data-flavor-theme="matcha"] .promo-card{background:linear-gradient(135deg,#7ac75a,var(--matcha) 45%,var(--matcha2))}
+[data-flavor-theme="matcha"] .promo-btn{color:var(--matcha2)}
+[data-flavor-theme="matcha"] .find-card h3 .fa-solid{color:var(--matcha)}
+[data-flavor-theme="matcha"] .find-card a{color:var(--matcha)}
+[data-flavor-theme="matcha"] .drawer-head h2 .fa-solid{color:var(--matcha)}
+[data-flavor-theme="matcha"] .close:hover{background:#e8f5d8;color:var(--matcha)}
+[data-flavor-theme="matcha"] .address-block input:focus,
+[data-flavor-theme="matcha"] .address-block select:focus{border-color:var(--matcha);box-shadow:0 0 0 4px rgba(95,174,59,.12)}
+[data-flavor-theme="matcha"] .remove-item:hover{color:var(--matcha)}
+[data-flavor-theme="matcha"] .qty-stepper button:hover,
+[data-flavor-theme="matcha"] .quantity button:hover{background:var(--matcha-soft);color:var(--matcha)}
+[data-flavor-theme="matcha"] .qris-tool:hover{border-color:var(--matcha);color:var(--matcha)}
+[data-flavor-theme="matcha"] .new-order-btn:hover{border-color:var(--matcha);color:var(--matcha)}
+[data-flavor-theme="matcha"] .success-code{color:var(--matcha);background:var(--matcha-soft);border-color:var(--matcha-line)}
+[data-flavor-theme="matcha"] .menu-toggle:hover,
+[data-flavor-theme="matcha"] .theme-toggle:hover,
+[data-flavor-theme="matcha"] .cart-btn:hover{border-color:var(--matcha-line)}
+[data-flavor-theme="matcha"] .mobile-nav a .fa-solid{color:var(--matcha)}
+[data-flavor-theme="matcha"] .mobile-nav a:hover{background:var(--matcha-soft);color:var(--matcha)}
+[data-flavor-theme="matcha"] .footer-col a:hover{color:var(--matcha)}
+[data-flavor-theme="matcha"] .footer-social a:hover{background:var(--matcha-soft);color:var(--matcha);border-color:var(--matcha-line)}
+[data-flavor-theme="matcha"] .floating .fa-solid{color:var(--matcha)}
+[data-flavor-theme="matcha"] :focus-visible{outline-color:var(--matcha)}
+[data-flavor-theme="matcha"] *::-webkit-scrollbar-thumb{background:var(--matcha-line)}
+[data-flavor-theme="matcha"] *::-webkit-scrollbar-thumb:hover{background:var(--matcha)}
+[data-flavor-theme="matcha"] .section h2::after{background:linear-gradient(90deg,var(--matcha),var(--matcha2))}
+
+/* ---- VANILLA / MARSHMALLOW THEME ---- */
+:root[data-theme="light"][data-flavor-theme="vanilla"]{
+  --bg:#fdfaf2; --pink:#c89a4a; --pink2:#a87f3a; --pink-soft:#fdf6e6; --pink-line:#f0e0bf;
+  --line:#efe6d0;
+  --shadow-sm:0 2px 10px rgba(168,127,58,.06);
+  --shadow:0 20px 50px -12px rgba(168,127,58,.16);
+  --shadow-lg:0 40px 90px -20px rgba(168,127,58,.28);
+}
+[data-flavor-theme="vanilla"] body::before{background:radial-gradient(60% 100% at 72% 0%,#fdeec8 0%,transparent 70%)}
+[data-flavor-theme="vanilla"] header{background:rgba(253,250,242,.85)}
+[data-flavor-theme="vanilla"] .primary{
+  background:linear-gradient(135deg,#f7e3b8,var(--vanilla) 40%,var(--vanilla2));
+  color:#5a4a2a;box-shadow:0 14px 30px -8px rgba(168,127,58,.5);
+}
+[data-flavor-theme="vanilla"] .primary:hover{box-shadow:0 20px 40px -10px rgba(168,127,58,.58)}
+[data-flavor-theme="vanilla"] .cart-count{background:linear-gradient(135deg,var(--vanilla),var(--vanilla2));box-shadow:0 3px 8px rgba(168,127,58,.4)}
+[data-flavor-theme="vanilla"] .cart-btn .fa-cart-shopping{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .product-card{background:#fdeec8;box-shadow:0 0 0 3px rgba(202,161,90,.22),0 40px 90px -20px rgba(168,127,58,.28)}
+[data-flavor-theme="vanilla"] .glow{background:radial-gradient(circle,#f5dca0,transparent 65%)}
+[data-flavor-theme="vanilla"] .eyebrow{color:var(--vanilla2);background:var(--vanilla-soft);border-color:var(--vanilla-line)}
+[data-flavor-theme="vanilla"] .tag{background:var(--vanilla-soft);border-color:var(--vanilla-line);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .tag-promo{background:linear-gradient(135deg,#f7e3b8,var(--vanilla2));color:#fff;border-color:transparent}
+[data-flavor-theme="vanilla"] h1 .grad{background:linear-gradient(120deg,var(--vanilla) 10%,#e8c98a 55%,var(--vanilla2));-webkit-background-clip:text;background-clip:text;color:transparent}
+[data-flavor-theme="vanilla"] .feature-icon,
+[data-flavor-theme="vanilla"] .menu-thumb,
+[data-flavor-theme="vanilla"] .kitchen-ph{background:linear-gradient(135deg,var(--vanilla-soft),#fdeec8);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .menu-price{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .fact{background:linear-gradient(135deg,#fdf8ee,#fdf6e6);border-color:var(--vanilla-line);color:#6a5a3a}
+[data-flavor-theme="vanilla"] .fact strong{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .about-tag{background:var(--vanilla-soft);border-color:var(--vanilla-line);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .about-card::before{background:linear-gradient(90deg,var(--vanilla),var(--vanilla2))}
+[data-flavor-theme="vanilla"] .feature:hover,
+[data-flavor-theme="vanilla"] .about-card:hover,
+[data-flavor-theme="vanilla"] .menu-card:hover,
+[data-flavor-theme="vanilla"] .kitchen-card:hover,
+[data-flavor-theme="vanilla"] .review-card:hover,
+[data-flavor-theme="vanilla"] .find-card:hover{border-color:var(--vanilla-line)}
+[data-flavor-theme="vanilla"] .nav-links a:hover{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .nav-links a:hover::after{background:linear-gradient(90deg,var(--vanilla),var(--vanilla2))}
+[data-flavor-theme="vanilla"] .menu-tag{background:var(--vanilla-soft);border-color:var(--vanilla-line);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .link-arrow{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .link-arrow:hover{color:#8a6828}
+[data-flavor-theme="vanilla"] .bundle-card{border-color:var(--vanilla)}
+[data-flavor-theme="vanilla"] .bundle-badge{background:var(--vanilla-soft);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .bundle-price strong{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .bundle-btn{background:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .promo-card{background:linear-gradient(135deg,#f7e3b8,var(--vanilla) 45%,var(--vanilla2))}
+[data-flavor-theme="vanilla"] .promo-btn{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .find-card h3 .fa-solid{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .find-card a{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .drawer-head h2 .fa-solid{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .close:hover{background:#fdeec8;color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .address-block input:focus,
+[data-flavor-theme="vanilla"] .address-block select:focus{border-color:var(--vanilla2);box-shadow:0 0 0 4px rgba(168,127,58,.15)}
+[data-flavor-theme="vanilla"] .remove-item:hover{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .qty-stepper button:hover,
+[data-flavor-theme="vanilla"] .quantity button:hover{background:var(--vanilla-soft);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .qris-tool:hover{border-color:var(--vanilla2);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .new-order-btn:hover{border-color:var(--vanilla2);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .success-code{color:var(--vanilla2);background:var(--vanilla-soft);border-color:var(--vanilla-line)}
+[data-flavor-theme="vanilla"] .menu-toggle:hover,
+[data-flavor-theme="vanilla"] .theme-toggle:hover,
+[data-flavor-theme="vanilla"] .cart-btn:hover{border-color:var(--vanilla-line)}
+[data-flavor-theme="vanilla"] .mobile-nav a .fa-solid{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .mobile-nav a:hover{background:var(--vanilla-soft);color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .footer-col a:hover{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .footer-social a:hover{background:var(--vanilla-soft);color:var(--vanilla2);border-color:var(--vanilla-line)}
+[data-flavor-theme="vanilla"] .floating .fa-solid{color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] :focus-visible{outline-color:var(--vanilla2)}
+[data-flavor-theme="vanilla"] *::-webkit-scrollbar-thumb{background:var(--vanilla-line)}
+[data-flavor-theme="vanilla"] *::-webkit-scrollbar-thumb:hover{background:var(--vanilla2)}
+[data-flavor-theme="vanilla"] .section h2::after{background:linear-gradient(90deg,var(--vanilla),var(--vanilla2))}
+
+/* Transisi halus saat tema rasa berganti */
+body, .product-card, .glow, .eyebrow, .tag, .primary, .cart-count,
+.feature-icon, .menu-thumb, .fact, .about-tag, .about-card, header,
+.feature, .menu-card, .kitchen-card, .review-card, .find-card{
+  transition:background .55s var(--out), color .4s, box-shadow .45s, border-color .4s;
+}
+
+/* Matikan shimmer bila user minta gerak minim */
+@media (prefers-reduced-motion:reduce){ .primary{animation:none} }
+.bundle-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:28px}
+.bundle-list .bundle-card{margin-top:0}
 </style>
 </head>
 <body>
@@ -980,7 +1241,7 @@ footer{padding:0}
 <section class="section reveal" id="paket">
   <h2>Paket Hemat</h2>
   <p class="description">Penawaran terbatas, selagi masih tersedia!</p>
-  <div class="bundle-card" id="bundleCard">
+  <div class="bundle-list" id="bundlelist">
     <div class="bundle-top">
       <span class="bundle-badge">HEMAT 2K · TERBATAS</span>
       <div class="bundle-price"><s>Rp12.000</s><strong>Rp10.000</strong></div>
@@ -1249,7 +1510,10 @@ footer{padding:0}
 
 const BASE_PRICE = 10000;                       // harga normal
 const PROMO = { active: false, discount: 1000 }; // ubah active:false untuk mematikan diskon
-const BUNDLE = { id: "Paket Hemat", flavor: "Original", topping: "Coklat Serès", normal: 12000, price: 10000 };
+const BUNDLES = [
+  { id: "Paket Hemat", flavor: "Original", toppings: ["Coklat Serès"], normal: 12000, price: 10000 },
+  { id: "Paket Matcha Combo", flavor: "Matcha", toppings: ["Oreo Crush", "Keju"], normal: 14000, price: 10000 },
+];
 const PRICE = PROMO.active ? BASE_PRICE - PROMO.discount : BASE_PRICE; // harga jual sekarang
 const WA_NUMBER = "62895415977158";
 
@@ -1298,8 +1562,10 @@ function saveJSON(key, value) {
 function comboKey(flavor, toppings) {
   return flavor + "|" + [...toppings].sort().join(",");
 }
+function bundleOf(it) { return BUNDLES.find(b => b.id === it.bundle); }
 function unitPrice(item) {
-  if (item.bundle) return BUNDLE.price;
+  const b = item.bundle && bundleOf(item);
+  if (b) return b.price;
   return PRICE + item.toppings.reduce((s, n) => s + (TOPPING_MAP[n] || 0), 0);
 }
 
@@ -1438,7 +1704,7 @@ async function loadMenuStatus() {
     }
     soldOutFlavors = next;
     menuLoaded = true;
-    renderBundle();
+    renderBundles();
 
     const pills = [...document.querySelectorAll("#variantOptions .variant-pill")];
     pills.forEach(btn => {
@@ -1602,29 +1868,40 @@ function renderCart() {
 }
 
 function cartSavings() {
-  return Object.values(cart).reduce((s, it) =>
-    s + (it.bundle ? (BUNDLE.normal - BUNDLE.price) * it.qty
-                   : (PROMO.active ? PROMO.discount * it.qty : 0)), 0);
+  return Object.values(cart).reduce((s, it) => {
+    const b = bundleOf(it);
+    if (b) return s + (b.normal - b.price) * it.qty;
+    return s + (PROMO.active ? PROMO.discount * it.qty : 0);
+  }, 0);
 }
 
-function addBundle() {
-  if (soldOutFlavors.has(BUNDLE.id)) { showToast("Paket hemat sudah habis", "info"); return; }
-  const key = "BUNDLE|" + BUNDLE.id;
+function addBundle(id) {
+  const b = BUNDLES.find(x => x.id === id);
+  if (!b) return;
+  if (soldOutFlavors.has(b.id)) { showToast("Paket ini sudah habis", "info"); return; }
+  const key = "BUNDLE|" + b.id;
   if (cart[key]) cart[key].qty += 1;
-  else cart[key] = { flavor: BUNDLE.flavor, toppings: [BUNDLE.topping], qty: 1, bundle: true };
+  else cart[key] = { flavor: b.flavor, toppings: [...b.toppings], qty: 1, bundle: b.id };
   persistCart();
   markLastItemNew();
-  showToast("Paket Hemat masuk keranjang");
+  showToast("Paket masuk keranjang");
   flyToCart();
 }
 
-function renderBundle() {
-  const btn = $("bundleBtn");
-  if (!btn) return;
-  const out = soldOutFlavors.has(BUNDLE.id);
-  btn.disabled = out;
-  btn.textContent = out ? "Paket habis" : "Pesan paket ini";
-  $("bundleCard").classList.toggle("sold-out", out);
+function renderBundles() {
+  const box = $("bundleList");
+  if (!box) return;
+  box.innerHTML = BUNDLES.map(b => {
+    const out = soldOutFlavors.has(b.id);
+    return `<div class="bundle-card${out ? " sold-out" : ""}">
+      <div class="bundle-top">
+        <span class="bundle-badge">HEMAT ${rupiah(b.normal - b.price)} · TERBATAS</span>
+        <div class="bundle-price"><s>${rupiah(b.normal)}</s><strong>${rupiah(b.price)}</strong></div>
+      </div>
+      <h3>Cocori ${b.flavor} + ${b.toppings.join(" + ")}</h3>
+      <button type="button" class="bundle-btn" ${out ? "disabled" : ""} onclick="addBundle('${b.id}')">${out ? "Paket habis" : "Pesan paket ini"}</button>
+    </div>`;
+  }).join("");
 }
 
 function renderTotal() {
@@ -1741,7 +2018,7 @@ async function checkout() {
     flavor: it.flavor,
     toppings: [...it.toppings],
     qty: it.qty,
-    bundle: !!it.bundle,
+    bundle: it.bundle || null,
   }));
 
   currentOrder = {
@@ -2080,6 +2357,7 @@ function init() {
   checkStoreStatus();
   initTheme();
   renderPrices();
+  renderBundles();
   startLive();
 
   const headerEl = document.querySelector("header");
@@ -2127,6 +2405,37 @@ function init() {
   } else {
     els.forEach(el => el.classList.add("reveal-in"));
   }
+})();
+</script>
+
+<!-- ============================================================
+     Flavor theme observer (tampilan saja — tidak mengubah fungsi)
+     Saat klik rasa: Matcha → hijau matcha, Vanilla → putih krim,
+     Original → stroberi (default). Hanya menulis atribut data-
+     flavor-theme pada <html>; tidak menyentuh logika keranjang.
+     ============================================================ -->
+<script>
+"use strict";
+(function(){
+  function syncFlavorTheme(){
+    var active = document.querySelector("#variantOptions .variant-pill.active");
+    var flavor = active ? active.getAttribute("data-flavor") : "Original";
+    var map = { "Matcha":"matcha", "Vanilla":"vanilla", "Original":"original" };
+    var theme = map[flavor] || "original";
+    document.documentElement.setAttribute("data-flavor-theme", theme);
+  }
+  // Update setiap kali pill rasa diklik (event delegation)
+  document.addEventListener("click", function(e){
+    var pill = e.target.closest ? e.target.closest("#variantOptions .variant-pill") : null;
+    if (pill) setTimeout(syncFlavorTheme, 0); // biarkan selectFlavor selesai dulu
+  });
+  // Update saat status menu (sold-out) mengubah pill aktif otomatis
+  var mo = ("MutationObserver" in window) ? new MutationObserver(syncFlavorTheme) : null;
+  document.addEventListener("DOMContentLoaded", function(){
+    syncFlavorTheme();
+    var wrap = document.getElementById("variantOptions");
+    if (wrap && mo) mo.observe(wrap, { subtree:true, attributes:true, attributeFilter:["class"] });
+  });
 })();
 </script>
 
