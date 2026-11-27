@@ -395,6 +395,7 @@
 </div>
 
 <script>
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const $ = id => document.getElementById(id);
 let ADMIN_PW = sessionStorage.getItem("cocori_admin_pw") || "";
 let salesChartInstance = null; // Menyimpan instance chart
@@ -666,15 +667,23 @@ async function loadOrders() {
         <div class="order-details">
           <div class="detail-group">
             <span class="detail-label">Nama Pelanggan</span>
-            <span class="detail-value">${o.customer_name}</span>
+            <span class="detail-value">${esc(o.customer_name)}</span>
           </div>
           <div class="detail-group">
             <span class="detail-label">Wilayah Pengiriman</span>
-            <span class="detail-value">${o.area}</span>
+            <span class="detail-value">${esc(o.area)}</span>
           </div>
           <div class="detail-group full">
             <span class="detail-label">Alamat Lengkap</span>
-            <span class="detail-value">${o.address}</span>
+            <span class="detail-value">${esc(o.address)}</span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">No. WhatsApp</span>
+            <span class="detail-value">${esc(o.customer_phone || "-")}</span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">Catatan</span>
+            <span class="detail-value">${esc(o.note || "-")}</span>
           </div>
         </div>
 
