@@ -7,7 +7,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 // Harga di server (samakan dengan index.html kalau harga berubah)
 const BASE_PRICE = 10000;
 const BUNDLE_PRICE = 10000;
-const FLAVORS = ["Original", "Matcha", "Milk"];
+const FLAVORS = ["Original", "Matcha", "Vanilla"];
 const TOPPINGS = { "Coklat Serès": 2000, "Silverqueen": 3000, "Oreo Crush": 2000, "Keju": 2000, "Almond Slice": 3000 };
 const AREAS = ["Pasirkuda", "Gunung Batu", "Bogor Barat", "Ciomas", "Jl. Letjen Ibrahim Adjie"];
 const ADMIN_STATUSES = ["menunggu_pembayaran", "menunggu_konfirmasi", "dibayar", "ditolak"];
@@ -65,7 +65,9 @@ module.exports = async (req, res) => {
       return res.status(200).json(data);
     }
 
-          // 1) tolak kalau toko diliburkan manual dari admin
+    // ---------- POST: customer bikin order baru ----------
+    if (req.method === "POST") {
+      // 1) tolak kalau toko diliburkan manual dari admin
       const st = await sb("store_settings?id=eq.1&select=manual_open");
       if (st.ok) {
         const srows = await st.json();
@@ -89,15 +91,23 @@ module.exports = async (req, res) => {
         return res.status(429).json({ error: "Terlalu banyak order, coba lagi sebentar" });
       }
 
-    // ---------- POST: customer bikin order baru ----------
-    if (req.method === "POST") {
-      const { customer_name, area, address, items } = req.body || {};
+      // 4) validasi data
+      const { customer_name, area, address, items, customer_phone, note } = req.body || {};
       const name = String(customer_name || "").trim();
       const addr = String(address || "").trim();
+      const phone = String(customer_phone || "").replace(/[\s-]/g, "");
+      const noteClean = String(note || "").trim().slice(0, 200);
       const result = cleanItems(items);
-      if (name.length < 1 || name.length > 60 || !AREAS.includes(area) || addr.length < 5 || addr.length > 300 || !result) {
+      if (
+        name.length < 1 || name.length > 60 ||
+        !AREAS.includes(area) ||
+        addr.length < 5 || addr.length > 300 ||
+        !/^08\d{8,12}$/.test(phone) ||
+        !result
+      ) {
         return res.status(400).json({ error: "Data order tidak valid" });
       }
+
       const r = await sb("orders", {
         method: "POST",
         body: JSON.stringify({
@@ -105,6 +115,8 @@ module.exports = async (req, res) => {
           customer_name: name,
           area,
           address: addr,
+          customer_phone: phone,
+          note: noteClean || null,
           items: result.clean,
           total: result.total, // dihitung server, bukan dari browser
           status: "menunggu_pembayaran",
