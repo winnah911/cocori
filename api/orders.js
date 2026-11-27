@@ -73,6 +73,13 @@ module.exports = async (req, res) => {
     // ---------- GET: admin melihat semua order ----------
     if (req.method === "GET") {
       if (!isAdmin(req)) return res.status(401).json({ error: "Unauthorized" });
+            // 5) tolak item yang sedang habis (diatur dari admin)
+      const so = await sb("menu_items?select=flavor&sold_out=eq.true");
+      if (so.ok) {
+        const soldOut = new Set((await so.json()).map(x => x.flavor));
+        const hit = result.clean.some(it => soldOut.has(it.flavor) || (it.bundle && soldOut.has(it.bundle)));
+        if (hit) return res.status(409).json({ error: "Ada item yang sedang habis" });
+      }
       const r = await sb("orders?select=*&order=created_at.desc");
       const data = await r.json();
       return res.status(200).json(data);
