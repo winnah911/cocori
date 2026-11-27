@@ -6,7 +6,10 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // Harga di server (samakan dengan index.html kalau harga berubah)
 const BASE_PRICE = 10000;
-const BUNDLE_PRICE = 10000;
+const BUNDLES = {
+  "Paket Hemat": { flavor: "Original", toppings: ["Coklat Serès"], price: 10000 },
+  "Paket Matcha Combo": { flavor: "Matcha", toppings: ["Oreo Crush", "Keju"], price: 10000 },
+};
 const FLAVORS = ["Original", "Matcha", "Vanilla"];
 const TOPPINGS = { "Coklat Serès": 2000, "Silverqueen": 3000, "Oreo Crush": 2000, "Keju": 2000, "Almond Slice": 3000 };
 const AREAS = ["Pasirkuda", "Gunung Batu", "Bogor Barat", "Ciomas", "Jl. Letjen Ibrahim Adjie"];
@@ -47,10 +50,20 @@ function cleanItems(items) {
     for (const t of toppings) {
       if (typeof t !== "string" || !Object.prototype.hasOwnProperty.call(TOPPINGS, t)) return null;
     }
-    const bundle = it.bundle === true;
-    const unit = bundle ? BUNDLE_PRICE : BASE_PRICE + toppings.reduce((s, t) => s + TOPPINGS[t], 0);
+    let unit;
+    let bundleId = null;
+    if (it.bundle) {
+      const b = typeof it.bundle === "string" && Object.prototype.hasOwnProperty.call(BUNDLES, it.bundle)
+        ? BUNDLES[it.bundle] : null;
+      if (!b || it.flavor !== b.flavor || toppings.length !== b.toppings.length ||
+          toppings.some(t => !b.toppings.includes(t))) return null;
+      unit = b.price;
+      bundleId = it.bundle;
+    } else {
+      unit = BASE_PRICE + toppings.reduce((s, t) => s + TOPPINGS[t], 0);
+    }
     total += unit * qty;
-    clean.push({ flavor: it.flavor, toppings, qty, bundle });
+    clean.push({ flavor: it.flavor, toppings, qty, bundle: bundleId });
   }
   return { clean, total };
 }
